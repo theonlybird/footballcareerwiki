@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footballer Career Table Generator</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #2d5a27, #4a7c59);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            border: 3px solid #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.6em;
+            }
+        }
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.3em;
+            }
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #ffd700;
+        }
+
+        .form-section h3 {
+            color: #ffd700;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin: 0 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .checkbox-group { 
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+        }
+        .checkbox-group label { 
+            display: flex;
+            align-items: center;
+            gap: 5px; 
+            margin: 0;
+            font-size: 14px;
+            font-weight: normal; 
+            color: #fff; 
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0; 
+        }
+
+
+        input, select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 2px solid #4a7c59;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="file"] {
+            color: black; 
+        }
+        input[type="file"]::file-selector-button {
+            color: initial; 
+            background-color: #efefef;
+            padding: 0.5em;
+            border: thin solid grey;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #e0e0e0;
+        }
+
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .club-entry {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4a7c59, #2d5a27);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #2d5a27, #4a7c59);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #ffed4e, #ffd700);
+        }
+
+        .btn-retro-orange {
+            background: linear-gradient(45deg, #f08c2d, #ffa500);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .btn-retro-orange:hover {
+            background: linear-gradient(45deg, #e07b1c, #ff9500);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        .error { /* General error styling, can be used by multiple divs */
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #ff6b6b;
+            text-align: center; /* Center error text */
+        }
+
+        .player-infobox {
+            background: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            width: auto;
+            display: inline-block;
+            margin: 20px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Lato, Helvetica, Arial, sans-serif;
+            font-size: 11px;
+        }
+
+        .player-name-header {
+            background: #ccccff;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        .player-photo {
+            text-align: center;
+            padding: 6px 8px 4px 8px; 
+            background: white;
+        }
+
+        .player-photo img {
+            max-width: 220px;
+            max-height: 280px;
+            border: 1px solid #a2a9b1;
+            display: block; 
+            margin: 0 auto; 
+        }
+        .img-bw-filter {
+            filter: grayscale(100%);
+            -webkit-filter: grayscale(100%); 
+        }
+
+
+        .player-photo .placeholder {
+            width: 220px;
+            height: 280px;
+            background: #f0f0f0;
+            border: 1px solid #a2a9b1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+            margin: 0 auto;
+        }
+
+        .photo-caption {
+            font-size: 10px;
+            text-align: center;
+            padding: 2px 8px 4px 8px; 
+            background: white;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        .personal-info-header {
+            background: #ccccff;
+            text-align: center;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        .info-table {
+            width: 100%;
+            font-size: 11px;
+        }
+
+        .info-table td {
+            padding: 2px 8px;
+            vertical-align: top;
+            border-bottom: 1px solid #eaecf0;
+        }
+
+        .info-table td:first-child {
+            font-weight: bold;
+            width: 35%;
+        }
+
+        .career-table {
+            border: 1px solid #a2a9b1;
+            font-size: 11px;
+            width: 100%;
+            margin-top: 0;
+            table-layout: auto;
+        }
+
+        .career-table th, .career-table td {
+            padding: 1px 4px;
+            text-align: center;
+            border-right: 1px solid #a2a9b1;
+            border-bottom: 1px solid #eaecf0;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .career-section-header {
+            background: #ccccff;
+            padding: 4px 8px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #a2a9b1;
+            font-size: 11px;
+        }
+
+        .career-table th {
+            background: #eaecf0;
+            padding: 2px 4px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #a2a9b1;
+            font-size: 10px;
+        }
+
+        .career-table td {
+            padding: 1px 4px;
+            text-align: center;
+            border-right: 1px solid #a2a9b1;
+            border-bottom: 1px solid #eaecf0;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .career-table .team-name {
+            text-align: left;
+            font-weight: normal;
+            padding-left: 6px;
+        }
+
+        .career-table .team-name a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+
+        .career-table .team-name a:hover {
+            text-decoration: underline;
+        }
+
+        .career-total {
+            font-weight: bold;
+            background: #f8f9fa;
+        }
+
+        .career-footnote {
+            font-size: 9px;
+            padding: 4px 8px;
+            background: #f8f9fa;
+            border-top: 1px solid #a2a9b1;
+            text-align: center;
+        }
+
+        .height-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .height-input input {
+            flex: 1;
+        }
+
+        .photo-upload {
+            margin: 15px 0;
+        }
+
+        #preview {
+            background: white;
+            color: black;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .searchable-input {
+            position: relative;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            color: black;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ Footballer Career Table Generator ⚽</h1>
+        
+        <form id="playerForm">
+            <div class="form-section">
+                <h3>Personal Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="playerName">Player Name *</label>
+                        <input type="text" id="playerName" name="playerName" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth *</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" required autocomplete="bday">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="placeOfBirth">Place of Birth *</label>
+                        <input type="text" id="placeOfBirth" name="placeOfBirth" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position *</label>
+                        <select id="position" name="position" required>
+                            <option value="">Select Position</option>
+                            <option value="Goalkeeper">Goalkeeper</option>
+                            <option value="Left-Back">Left-Back</option>
+                            <option value="Centre-Back">Centre-Back</option>
+                            <option value="Right-Back">Right-Back</option>
+                            <option value="Midfielder">Midfielder</option>
+                            <option value="Attacking Midfielder">Attacking Midfielder</option>
+                            <option value="Defensive Midfielder">Defensive Midfielder</option>
+                            <option value="Right Winger">Right Winger</option>
+                            <option value="Left Winger">Left Winger</option>
+                            <option value="Striker">Striker</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Height *</label> 
+                        <div class="height-input">
+                            <input type="number" id="heightFeet" name="heightFeet" placeholder="Feet" min="3" max="8" autocomplete="off" aria-label="Height in feet">
+                            <input type="number" id="heightInches" name="heightInches" placeholder="Inches" min="0" max="11" autocomplete="off" aria-label="Height in inches">
+                            <span>OR</span>
+                            <input type="number" id="heightCm" name="heightCm" placeholder="Centimeters" min="100" max="250" autocomplete="off" aria-label="Height in centimeters">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="careerLength">Career Length (seasons) *</label>
+                        <input type="number" id="careerLength" name="careerLength" min="1" max="40" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="photo-upload form-group">
+                    <label for="playerPhoto">Player Photo (optional)</label>
+                    <input type="file" id="playerPhoto" name="playerPhoto" accept="image/jpeg,image/png">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Youth Career</h3>
+                <div class="form-group">
+                    <label for="youthClub">Youth Club *</label>
+                    <div class="searchable-input">
+                        <input type="text" id="youthClub" name="youthClub" placeholder="Search for club..." required autocomplete="off">
+                        <div class="suggestions" id="youthClubSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>International Career (optional)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <div class="searchable-input">
+                            <input type="text" id="country" name="country" placeholder="Search for country..." autocomplete="off">
+                            <div class="suggestions" id="countrySuggestions"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="caps">International Caps</label>
+                        <input type="number" id="caps" name="caps" min="0" max="250" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="errorMessages"></div> 
+
+            <div class="form-section">
+                <h3>Auto-generate Senior Career</h3>
+                <div style="text-align: center; margin: 10px 0;"> 
+                    <button type="button" class="btn btn-retro-orange" onclick="createJourneyman()" id="journeymanBtn">Create Journeyman</button>
+                    <button type="button" class="btn btn-retro-orange" onclick="createWonderkidBurnout()" id="wonderkidBtn">Create Wonderkid Burnout</button>
+                </div>
+                <div id="autoGenErrorMessages"></div> {/* MODIFICATION: New div for auto-gen errors */}
+            </div>
+
+            <div class="form-section">
+                <h3>Create your own Senior Career</h3>
+                <div id="seniorClubs">
+                    <div class="club-entry">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;" class="checkbox-group">
+                            <h4 style="margin: 0; color: #ffd700;">First Club *</h4>
+                            <label for="benchwarmer_0">
+                                <input type="checkbox" class="benchwarmer-checkbox" name="benchwarmer_0" id="benchwarmer_0"> Benchwarmer
+                            </label>
+                            <label for="prolific_0">
+                                <input type="checkbox" class="prolific-checkbox" name="prolific_0" id="prolific_0"> Prolific
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="clubName_0">Club Name</label>
+                                <div class="searchable-input">
+                                    <input type="text" id="clubName_0" name="clubName_0" class="club-input" placeholder="Search for club..." required autocomplete="off">
+                                    <div class="suggestions"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="clubSeasons_0">Seasons</label>
+                                <input type="number" id="clubSeasons_0" name="clubSeasons_0" class="seasons-input" min="1" max="40" required autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn" onclick="addClub()">Add Another Club</button>
+                <div style="text-align: center; margin: 20px 0 0 0;">
+                     <button type="submit" class="btn btn-primary">Generate Career Table</button> 
+                </div>
+            </div>
+
+
+            <div style="text-align: center; margin: 10px 0 30px 0;">
+                <button type="button" class="btn" onclick="downloadTable()" id="downloadBtn" style="display: none;">Download as JPG</button>
+            </div>
+        </form>
+
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        function normalizeClubName(name) {
+            if (!name) return '';
+            return name
+                .toLowerCase()
+                .replace(/đ/g, 'd') 
+                .normalize('NFD') 
+                .replace(/[\u0300-\u036f]/g, "") 
+                .replace(/ł/g, 'l') 
+                .replace(/ø/g, 'o') 
+                .replace(/æ/g, 'ae') 
+                .replace(/œ/g, 'oe') 
+                .replace(/\s+/g, ' ') 
+                .trim();
+        }
+
+        const clubDisplayNames = {};
+
+        const originalFootballClubsList = [
+            'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion', 'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Liverpool', 'Luton Town', 'Manchester City', 'Manchester United', 'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers',
+            'Birmingham City', 'Blackburn Rovers', 'Bristol City', 'Cardiff City', 'Coventry City', 'Huddersfield Town', 'Hull City', 'Ipswich Town', 'Leeds United', 'Leicester City', 'Middlesbrough', 'Millwall', 'Norwich City', 'Plymouth Argyle', 'Preston North End', 'Queens Park Rangers', 'Rotherham United', 'Sheffield Wednesday', 'Southampton', 'Stoke City', 'Sunderland', 'Swansea City', 'Watford', 'West Bromwich Albion',
+            'Barnsley', 'Blackpool', 'Bolton Wanderers', 'Burton Albion', 'Cambridge United', 'Carlisle United', 'Charlton Athletic', 'Cheltenham Town', 'Derby County', 'Exeter City', 'Fleetwood Town', 'Lincoln City', 'Northampton Town', 'Oxford United', 'Peterborough United', 'Port Vale', 'Portsmouth', 'Reading', 'Shrewsbury Town', 'Stevenage', 'Stockport County', 'Wigan Athletic', 'Wycombe Wanderers', 'Bristol Rovers',
+            'Accrington Stanley', 'AFC Wimbledon', 'Barrow', 'Bradford City', 'Colchester United', 'Crawley Town', 'Crewe Alexandra', 'Doncaster Rovers', 'Forest Green Rovers', 'Gillingham', 'Grimsby Town', 'Harrogate Town', 'Mansfield Town', 'Milton Keynes Dons', 'Morecambe', 'Newport County', 'Notts County', 'Salford City', 'Sutton United', 'Swindon Town', 'Tranmere Rovers', 'Walsall', 'Wrexham',
+            'Aberdeen', 'Celtic', 'Dundee', 'Heart of Midlothian', 'Hibernian', 'Kilmarnock', 'Livingston', 'Motherwell', 'Rangers', 'Ross County', 'St. Johnstone', 'St. Mirren',
+            'Airdrieonians', 'Ayr United', 'Dundee United', 'Dunfermline Athletic', 'Greenock Morton', 'Hamilton Academical', 'Inverness Caledonian Thistle', 'Partick Thistle', 'Queen\'s Park', 'Raith Rovers',
+            'Alloa Athletic', 'Annan Athletic', 'Arbroath', 'Cove Rangers', 'Dumbarton', 'Falkirk', 'Kelty Hearts', 'Montrose', 'Queen of the South', 'Stenhousemuir',
+            'Bonnyrigg Rose', 'Clyde', 'East Fife', 'Edinburgh City', 'Elgin City', 'Forfar Athletic', 'Peterhead', 'Spartans', 'Stirling Albion', 'Stranraer',
+            'Athletic Bilbao', 'Atlético Madrid', 'Barcelona', 'Real Betis', 'Cádiz CF', 'Celta Vigo', 'Getafe CF', 'Girona FC', 'Granada CF', 'UD Las Palmas', 'RCD Mallorca', 'CA Osasuna', 'Rayo Vallecano', 'Real Madrid', 'Real Sociedad', 'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'UD Almería', 'Deportivo Alavés',
+            'Albacete Balompié', 'AD Alcorcón', 'SD Amorebieta', 'FC Andorra', 'Burgos CF', 'FC Cartagena', 'CD Eldense', 'RCD Espanyol', 'Racing de Ferrol', 'SD Huesca', 'CD Leganés', 'Levante UD', 'CD Mirandés', 'Real Oviedo', 'Racing Santander', 'Real Valladolid', 'Real Zaragoza', 'SD Eibar', 'Sporting Gijón', 'CD Tenerife', 'Villarreal B', 'Elche CF',
+            'FC Augsburg', 'VfL Bochum', 'Eintracht Frankfurt', 'SC Freiburg', '1. FC Heidenheim', 'TSG Hoffenheim', '1. FC Köln', 'RB Leipzig', 'Bayer 04 Leverkusen', 'Mainz 05', 'Borussia Mönchengladbach', 'Bayern Munich', 'Borussia Dortmund', 'SV Darmstadt 98', 'Union Berlin', 'VfB Stuttgart', 'Werder Bremen', 'VfL Wolfsburg',
+            '1. FC Kaiserslautern', 'Karlsruher SC', '1. FC Magdeburg', '1. FC Nürnberg', 'SC Paderborn 07', 'Holstein Kiel', 'Fortuna Düsseldorf', 'Hannover 96', 'Hamburger SV', 'Hertha BSC', 'FC St. Pauli', 'Eintracht Braunschweig', 'SpVgg Greuther Fürth', 'SV Wehen Wiesbaden', 'FC Schalke 04', 'VfL Osnabrück', 'Arminia Bielefeld', 'FC Hansa Rostock',
+            'AC Milan', 'AS Roma', 'Atalanta BC', 'Bologna FC 1909', 'Cagliari Calcio', 'Empoli FC', 'ACF Fiorentina', 'Frosinone Calcio', 'Genoa CFC', 'Hellas Verona FC', 'Inter Milan', 'Juventus FC', 'SS Lazio', 'US Lecce', 'AC Monza', 'SSC Napoli', 'US Salernitana 1919', 'US Sassuolo Calcio', 'Torino FC', 'Udinese Calcio',
+            'Ascoli Calcio 1898 FC', 'SSC Bari', 'Brescia Calcio', 'US Catanzaro 1929', 'Como 1907', 'Cosenza Calcio', 'US Cremonese', 'Feralpisalò', 'Modena FC', 'Palermo FC', 'Parma Calcio 1913', 'Pisa SC', 'AC Reggiana 1919', 'UC Sampdoria', 'Spezia Calcio', 'FC Südtirol', 'Ternana Calcio', 'Venezia FC', 'AS Cittadella', 'Benevento Calcio',
+            'AS Monaco', 'Stade Brestois 29', 'Clermont Foot 63', 'Le Havre AC', 'RC Lens', 'Lille OSC', 'FC Lorient', 'Olympique Lyonnais', 'Olympique de Marseille', 'FC Metz', 'Montpellier HSC', 'FC Nantes', 'OGC Nice', 'Paris Saint-Germain', 'Stade de Reims', 'Stade Rennais FC', 'RC Strasbourg Alsace', 'Toulouse FC', 'AS Saint-Étienne',
+            'AC Ajaccio', 'Amiens SC', 'Angers SCO', 'AJ Auxerre', 'SC Bastia', 'Girondins de Bordeaux', 'SM Caen', 'US Concarneau', 'USL Dunkerque', 'Grenoble Foot 38', 'En Avant Guingamp', 'Stade Lavallois', 'Paris FC', 'Pau FC', 'US Quevilly-Rouen', 'Rodez AF', 'ESTAC Troyes', 'Valenciennes FC',
+            'SL Benfica', 'FC Porto', 'Sporting CP', 'SC Braga', 'Vitória Guimarães', 'Gil Vicente FC', 'Rio Ave FC', 'FC Famalicão', 'Moreirense FC', 'Casa Pia AC', 'Estrela da Amadora', 'Boavista FC', 'FC Vizela', 'FC Arouca', 'GD Chaves', 'SC Farense', 'Portimonense SC', 'Estoril Praia',
+            'AVS Futebol SAD', 'Académico de Viseu FC', 'FC Alverca', 'SL Benfica B', 'FC Felgueiras 1932', 'CD Feirense', 'Leixões SC', 'CD Mafra', 'CD Nacional', 'UD Oliveirense', 'FC Paços de Ferreira', 'FC Penafiel', 'FC Porto B', 'CD Tondela', 'SC União Torreense', 'UD Vilafranquense', 'União de Leiria',
+            'AFC Ajax', 'AZ Alkmaar', 'Excelsior Rotterdam', 'FC Twente', 'FC Utrecht', 'FC Volendam', 'Feyenoord Rotterdam', 'Fortuna Sittard', 'Go Ahead Eagles', 'NEC Nijmegen', 'PEC Zwolle', 'PSV Eindhoven', 'RKC Waalwijk', 'SC Heerenveen', 'Sparta Rotterdam', 'Vitesse Arnhem', 'Willem II Tilburg',
+            'ADO Den Haag', 'Almere City FC', 'De Graafschap', 'FC Dordrecht', 'FC Eindhoven', 'FC Den Bosch', 'FC Emmen', 'Helmond Sport', 'Jong Ajax', 'Jong AZ', 'Jong FC Utrecht', 'Jong PSV', 'MVV Maastricht', 'NAC Breda', 'Roda JC Kerkrade', 'SC Cambuur', 'Telstar', 'TOP Oss',
+            'Galatasaray SK', 'Fenerbahçe SK', 'Beşiktaş JK', 'Trabzonspor', 'İstanbul Başakşehir FK', 'Kasımpaşa SK', 'Sivasspor', 'Alanyaspor', 'Çaykur Rizespor', 'Antalyaspor', 'Gaziantep FK', 'Adana Demirspor', 'Samsunspor', 'Kayserispor', 'Hatayspor', 'Konyaspor', 'Eyüpspor', 'Göztepe', 'Bodrum FK',
+            'Zenit St. Petersburg', 'CSKA Moscow', 'Spartak Moscow', 'Lokomotiv Moscow', 'FC Krasnodar', 'Dynamo Moscow', 'Rubin Kazan', 'FC Rostov', 'Krylia Sovetov Samara', 'Akhmat Grozny', 'Pari Nizhny Novgorod', 'FC Khimki', 'Fakel Voronezh', 'FC Orenburg', 'Ural Yekaterinburg', 
+            'Atlanta United FC', 'Austin FC', 'Charlotte FC', 'Chicago Fire FC', 'FC Cincinnati', 'Colorado Rapids', 'Columbus Crew', 'DC United', 'FC Dallas', 'Houston Dynamo FC', 'Inter Miami CF', 'LA Galaxy', 'Los Angeles FC', 'Minnesota United FC', 'CF Montréal', 
+            'Nashville SC', 'New England Revolution', 'New York City FC', 'New York Red Bulls', 'Orlando City SC', 'Philadelphia Union', 'Portland Timbers', 'Real Salt Lake', 'San Jose Earthquakes', 'Seattle Sounders FC', 'Sporting Kansas City', 'St. Louis City SC', 'Toronto FC', 'Vancouver Whitecaps FC',
+            'Club América', 'Atlas FC', 'Atlético San Luis', 'Cruz Azul', 'FC Juárez', 'CD Guadalajara', 'Club León', 'Mazatlán FC', 'CF Monterrey', 'Club Necaxa', 'CF Pachuca', 'Club Puebla', 'Pumas UNAM', 'Querétaro FC', 'Santos Laguna', 'Tigres UANL', 'Club Tijuana', 'Deportivo Toluca FC',
+            'Daegu FC', 'Daejeon Hana Citizen', 'FC Seoul', 'Gangwon FC', 'Gwangju FC', 'Incheon United', 'Jeju United', 'Jeonbuk Hyundai Motors', 'Pohang Steelers', 'Suwon FC', 'Suwon Samsung Bluewings', 'Ulsan Hyundai', 
+            'Albirex Niigata', 'Cerezo Osaka', 'FC Tokyo', 'Gamba Osaka', 'Hokkaido Consadole Sapporo', 'Júbilo Iwata', 'Kashima Antlers', 'Kashiwa Reysol', 'Kawasaki Frontale', 'Kyoto Sanga FC', 'Machida Zelvia', 'Nagoya Grampus', 'Sanfrecce Hiroshima', 'Shonan Bellmare', 'Tokyo Verdy', 'Urawa Red Diamonds', 'Vissel Kobe', 'Yokohama F. Marinos',
+            'Athletico Paranaense', 'Atlético Goianiense', 'Atlético Mineiro', 'EC Bahia', 'Botafogo FR', 'SC Corinthians Paulista', 'Coritiba Foot Ball Club', 'Cruzeiro EC', 'Cuiabá EC', 'CR Flamengo', 'Fluminense FC', 'Fortaleza EC', 'Goiás EC', 'Grêmio FBPA', 'SC Internacional', 'SE Palmeiras', 'Red Bull Bragantino', 'Santos FC', 'São Paulo FC', 'CR Vasco da Gama',
+            'ABC FC', 'Amazonas FC', 'América Mineiro', 'Avaí FC', 'Botafogo-SP', 'Brusque FC', 'Ceará SC', 'Chapecoense', 'CRB', 'Criciúma EC', 'Guarani FC', 'Ituano FC', 'Londrina EC', 'Mirassol FC', 'Grêmio Novorizontino', 'Operário Ferroviário EC', 'Paysandu SC', 'AA Ponte Preta', 'Sampaio Corrêa FC', 'Sport Recife', 'Tombense FC', 'Vila Nova FC',
+            'Argentinos Juniors', 'Arsenal de Sarandí', 'Atlético Tucumán', 'CA Banfield', 'Barracas Central', 'CA Belgrano', 'Boca Juniors', 'Central Córdoba (SdE)', 'CA Colón', 'Defensa y Justicia', 'Estudiantes de La Plata', 'Gimnasia y Esgrima La Plata', 'Godoy Cruz', 'CA Huracán', 'CA Independiente', 'Instituto ACC', 'CA Lanús', 'Newell\'s Old Boys', 'CA Platense', 'Racing Club', 'River Plate', 'Rosario Central', 'San Lorenzo de Almagro', 'CA Sarmiento', 'Talleres de Córdoba', 'CA Tigre', 'Unión de Santa Fe', 'Vélez Sarsfield',
+            'All Boys', 'Aldosivi', 'Almagro', 'Almirante Brown', 'Alvarado', 'Club Atlético Atlanta', 'Atlético Rafaela', 'Brown de Adrogué', 'Chaco For Ever', 'Chacarita Juniors', 'Deportivo Maipú', 'Deportivo Morón', 'Estudiantes (BA)', 'Ferro Carril Oeste', 'Gimnasia y Esgrima (Mendoza)', 'Guillermo Brown', 'Independiente Rivadavia', 'Nueva Chicago', 'Quilmes AC', 'Racing de Córdoba', 'Deportivo Riestra', 'San Martín de San Juan', 'San Martín de Tucumán', 'San Telmo', 'CA Temperley', 'Tristán Suárez',
+            'Al-Ahli Saudi FC', 'Al-Ettifaq FC', 'Al-Fateh SC', 'Al-Fayha FC', 'Al-Hazem SC', 'Al-Hilal SFC', 'Al-Ittihad Club', 'Al-Khaleej FC', 'Al-Nassr FC', 'Al-Okhdood Club', 'Al-Raed SFC', 'Al-Riyadh SC', 'Al-Shabab FC', 'Al-Taawoun FC', 'Al-Tai FC', 'Al-Wehda FC', 'Abha Club', 'Damac FC',
+            'AEK Athens FC', 'Olympiacos FC', 'Panathinaikos FC', 'PAOK FC', 'Aris Thessaloniki FC', 'Asteras Tripolis FC', 'Atromitos FC', 'PAS Lamia 1964', 'Levadiakos FC', 'OFI Crete FC', 'Panserraikos FC', 'PAS Giannina FC', 'Volos NFC', 'AE Kifisia FC',
+            'Adelaide United', 'Brisbane Roar', 'Central Coast Mariners', 'Macarthur FC', 'Melbourne City', 'Melbourne Victory', 'Newcastle Jets', 'Perth Glory', 'Sydney FC', 'Wellington Phoenix', 'Western Sydney Wanderers', 'Western United',
+            'Auckland City FC', 'Eastern Suburbs AFC', 'Hamilton Wanderers', 'Hawke\'s Bay United', 'Wellington Olympic AFC', 'Cashmere Technical', 'Canterbury United', 'Western Springs AFC', 'Birkenhead United AFC', 'Waitakere United',
+            'Beijing Guoan', 'Changchun Yatai', 'Chengdu Rongcheng', 'Cangzhou Mighty Lions', 'Dalian Professional', 'Henan FC', 'Meizhou Hakka', 'Nantong Zhiyun', 'Qingdao Hainiu', 'Shandong Taishan', 'Shanghai Port', 'Shanghai Shenhua', 'Shenzhen FC', 'Tianjin Jinmen Tiger', 'Wuhan Three Towns', 'Zhejiang Professional'
+        ];
+
+        const footballClubs = [...new Set(originalFootballClubsList.map(name => {
+            const normalized = normalizeClubName(name);
+            if (!clubDisplayNames[normalized] || name.length > clubDisplayNames[normalized].length) { 
+                 clubDisplayNames[normalized] = name; 
+            }
+            return normalized;
+        }))].sort();
+
+        const countries = [ 
+            'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Democratic Republic of the Congo', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'England', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Northern Ireland', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Scotland', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Wales', 'Yemen', 'Zambia', 'Zimbabwe'
+        ];
+
+        let clubCount = 1; 
+        let playerPhotoUrl = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            setupSearchableInputs(); 
+        });
+
+        function setupEventListeners() {
+            document.getElementById('heightFeet').addEventListener('input', convertFromFeet);
+            document.getElementById('heightInches').addEventListener('input', convertFromFeet);
+            document.getElementById('heightCm').addEventListener('input', convertFromCm);
+
+            document.getElementById('playerPhoto').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const maxSize = 3 * 1024 * 1024;
+                    if (file.size > maxSize) {
+                        alert('Photo file size is too large. Please choose an image smaller than 3MB. Current file size: ' + (file.size / (1024 * 1024)).toFixed(1) + 'MB');
+                        e.target.value = '';
+                        playerPhotoUrl = null;
+                        return;
+                    }
+                    
+                    if (!file.type.match(/image\/(jpeg|jpg|png)/i)) {
+                        alert('Please upload a JPEG or PNG image file only.');
+                        e.target.value = '';
+                        playerPhotoUrl = null;
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        playerPhotoUrl = e.target.result;
+                    };
+                    reader.onerror = function() {
+                        alert('Error reading the image file. Please try again with a different image.');
+                        e.target.value = '';
+                        playerPhotoUrl = null;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('playerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('errorMessages').innerHTML = ''; // Clear general errors
+                document.getElementById('autoGenErrorMessages').innerHTML = ''; // Clear auto-gen errors
+                
+                const errors = validateForm();
+                if (errors.length > 0) {
+                    document.getElementById('errorMessages').innerHTML = 
+                        '<div class="error">' + errors.join('<br>') + '</div>';
+                    return;
+                }
+                generateCareerTable();
+            });
+        }
+
+        function setupSearchableInputs() {
+            const youthClubInput = document.getElementById('youthClub');
+            const youthClubSuggestions = document.getElementById('youthClubSuggestions');
+            setupSearchableInput(youthClubInput, footballClubs, youthClubSuggestions, clubDisplayNames);
+
+            setupSearchableInput(document.getElementById('country'), countries, document.getElementById('countrySuggestions'));
+            setupClubInputs();
+        }
+
+        function setupSearchableInput(inputElement, dataArray, suggestionsElement, displayMap = null) {
+            inputElement.addEventListener('input', function() {
+                const normalizedQuery = normalizeClubName(this.value); 
+                
+                const suggestions = dataArray.filter(item => normalizeClubName(item).includes(normalizedQuery)).slice(0, 10);
+
+                suggestionsElement.innerHTML = '';
+                if (normalizedQuery && suggestions.length > 0) {
+                    suggestions.forEach(normalizedSuggestionItem => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.textContent = (displayMap && displayMap[normalizedSuggestionItem]) ? displayMap[normalizedSuggestionItem] : normalizedSuggestionItem;
+                        
+                        div.onclick = () => {
+                            inputElement.value = normalizedSuggestionItem; 
+                            suggestionsElement.style.display = 'none';
+                        };
+                        suggestionsElement.appendChild(div);
+                    });
+                    suggestionsElement.style.display = 'block';
+                } else {
+                    suggestionsElement.style.display = 'none';
+                }
+            });
+
+            inputElement.addEventListener('blur', function() {
+                setTimeout(() => {
+                    suggestionsElement.style.display = 'none';
+                }, 200); 
+            });
+        }
+
+        function setupClubInputs() { 
+            document.querySelectorAll('.club-entry').forEach((clubEntry, index) => {
+                const clubInputElement = clubEntry.querySelector('.club-input');
+                const suggestionsDiv = clubEntry.querySelector('.suggestions');
+                const seasonsInputElement = clubEntry.querySelector('.seasons-input');
+                const benchwarmerCheckbox = clubEntry.querySelector('.benchwarmer-checkbox');
+                const prolificCheckbox = clubEntry.querySelector('.prolific-checkbox'); 
+                
+                const entryIndex = index; 
+                
+                const clubNameId = `clubName_${entryIndex}`;
+                const seasonsId = `clubSeasons_${entryIndex}`;
+                const benchwarmerId = `benchwarmer_${entryIndex}`;
+                const prolificId = `prolific_${entryIndex}`; 
+
+                const clubNameLabel = clubEntry.querySelector(`label[for^="clubName_"]`) || clubEntry.querySelector('label:first-of-type'); 
+                const seasonsLabel = clubEntry.querySelector(`label[for^="clubSeasons_"]`) || clubEntry.querySelectorAll('label')[1]; 
+
+                if (clubInputElement) {
+                    clubInputElement.id = clubNameId;
+                    clubInputElement.name = clubNameId; 
+                    if(clubNameLabel) clubNameLabel.htmlFor = clubNameId;
+                }
+                if (seasonsInputElement) {
+                    seasonsInputElement.id = seasonsId;
+                    seasonsInputElement.name = seasonsId; 
+                    if(seasonsLabel) seasonsLabel.htmlFor = seasonsId;
+                }
+                if (benchwarmerCheckbox) {
+                    benchwarmerCheckbox.id = benchwarmerId;
+                    benchwarmerCheckbox.name = benchwarmerId; 
+                }
+                if (prolificCheckbox) {
+                    prolificCheckbox.id = prolificId;
+                    prolificCheckbox.name = prolificId;
+                }
+
+                if (clubInputElement && suggestionsDiv) {
+                    if (!clubInputElement.dataset.searchableSetup) {
+                        setupSearchableInput(clubInputElement, footballClubs, suggestionsDiv, clubDisplayNames);
+                        clubInputElement.dataset.searchableSetup = 'true';
+                    }
+                }
+            });
+        }
+        
+        function convertFromFeet() {
+            const feet = parseInt(document.getElementById('heightFeet').value) || 0;
+            const inches = parseInt(document.getElementById('heightInches').value) || 0;
+            if (feet > 0 || inches > 0) {
+                const totalCm = Math.round((feet * 12 + inches) * 2.54);
+                document.getElementById('heightCm').value = totalCm;
+            }
+        }
+
+        function convertFromCm() {
+            const cm = parseInt(document.getElementById('heightCm').value) || 0;
+            if (cm > 0) {
+                const totalInches = Math.round(cm / 2.54);
+                const feet = Math.floor(totalInches / 12);
+                const inches = totalInches % 12;
+                document.getElementById('heightFeet').value = feet;
+                document.getElementById('heightInches').value = inches;
+            }
+        }
+        
+        function removeClub(button) {
+            const seniorClubsDiv = document.getElementById('seniorClubs');
+            if (seniorClubsDiv.querySelectorAll('.club-entry').length > 1) { 
+                button.closest('.club-entry').remove(); 
+                clubCount = seniorClubsDiv.querySelectorAll('.club-entry').length; 
+            } else {
+                alert("You must have at least one senior club.");
+            }
+        }
+
+        function addClub() {
+            const currentClubEntries = document.querySelectorAll('#seniorClubs .club-entry').length;
+            if (currentClubEntries < 20) {
+                const newClubIndex = currentClubEntries; 
+                
+                const clubsContainer = document.getElementById('seniorClubs');
+                const clubEntry = document.createElement('div');
+                clubEntry.className = 'club-entry';
+                
+                const ordinals = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth', 'Eleventh', 'Twelfth', 'Thirteenth', 'Fourteenth', 'Fifteenth', 'Sixteenth', 'Seventeenth', 'Eighteenth', 'Nineteenth', 'Twentieth'];
+                const ordinal = ordinals[newClubIndex] || (newClubIndex + 1) + 'th'; 
+                
+                clubEntry.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;" class="checkbox-group">
+                        <h4 style="margin: 0; color: #ffd700;">${ordinal} Club</h4>
+                        <label for="benchwarmer_${newClubIndex}">
+                            <input type="checkbox" class="benchwarmer-checkbox" name="benchwarmer_${newClubIndex}" id="benchwarmer_${newClubIndex}"> Benchwarmer
+                        </label>
+                        <label for="prolific_${newClubIndex}">
+                            <input type="checkbox" class="prolific-checkbox" name="prolific_${newClubIndex}" id="prolific_${newClubIndex}"> Prolific
+                        </label>
+                        <label for="loan_${newClubIndex}"> 
+                            <input type="checkbox" class="loan-checkbox" name="loan_${newClubIndex}" id="loan_${newClubIndex}"> Loan
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="clubName_${newClubIndex}">Club Name</label>
+                            <div class="searchable-input">
+                                <input type="text" id="clubName_${newClubIndex}" name="clubName_${newClubIndex}" class="club-input" placeholder="Search for club..." required autocomplete="off">
+                                <div class="suggestions"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clubSeasons_${newClubIndex}">Seasons</label>
+                            <input type="number" id="clubSeasons_${newClubIndex}" name="clubSeasons_${newClubIndex}" class="seasons-input" min="1" max="40" required autocomplete="off">
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="removeClub(this)" style="background: #ff6b6b;">Remove Club</button>`;
+                
+                clubsContainer.appendChild(clubEntry);
+                
+                const newClubInputElement = clubEntry.querySelector(`#clubName_${newClubIndex}`);
+                const suggestionsContainer = newClubInputElement.closest('.searchable-input').querySelector('.suggestions');
+
+                if (newClubInputElement && suggestionsContainer) {
+                     setupSearchableInput(newClubInputElement, footballClubs, suggestionsContainer, clubDisplayNames);
+                     newClubInputElement.dataset.searchableSetup = 'true'; 
+                }
+                clubCount = currentClubEntries + 1; 
+            }
+        }
+        
+        const topTierClubNamesNormalized = [
+            'arsenal', 'aston villa', 'brighton & hove albion', 'chelsea', 'crystal palace', 'everton', 'fulham', 'liverpool', 'manchester city', 'manchester united', 'newcastle united', 'nottingham forest', 'tottenham hotspur', 'west ham united', 'wolverhampton wanderers',
+            'athletic bilbao', 'atletico madrid', 'barcelona', 'real betis', 'celta vigo', 'getafe cf', 'girona fc', 'ud las palmas', 'rcd mallorca', 'ca osasuna', 'rayo vallecano', 'real madrid', 'real sociedad', 'sevilla fc', 'valencia cf', 'villarreal cf', 'ud almeria', 'deportivo alaves',
+            'fc augsburg', 'vfl bochum', 'eintracht frankfurt', 'sc freiburg', '1. fc heidenheim', 'tsg hoffenheim', '1. fc koln', 'rb leipzig', 'bayer 04 leverkusen', 'mainz 05', 'borussia monchengladbach', 'bayern munich', 'borussia dortmund', 'union berlin', 'vfb stuttgart', 'werder bremen', 'vfl wolfsburg',
+            'ac milan', 'as roma', 'atalanta bc', 'bologna fc 1909', 'acf fiorentina', 'genoa cfc', 'hellas verona fc', 'inter milan', 'juventus fc', 'ss lazio', 'ssc napoli', 'us sassuolo calcio', 'torino fc', 'udinese calcio',
+            'as monaco', 'rc lens', 'lille osc', 'olympique lyonnais', 'olympique de marseille', 'montpellier hsc', 'fc nantes', 'ogc nice', 'paris saint-germain', 'stade de reims', 'stade rennais fc', 'rc strasbourg alsace', 'toulouse fc',
+            'afc ajax', 'psv eindhoven', 'feyenoord rotterdam', 'sl benfica', 'fc porto', 'sporting cp', 'celtic', 'rangers',
+            'galatasaray sk', 'fenerbahce sk', 'besiktas jk', 'trabzonspor', 'istanbul basaksehir fk',
+            'zenit st. petersburg', 'cska moscow', 'spartak moscow', 'lokomotiv moscow', 'fc krasnodar', 'dynamo moscow',
+            'al-ahli saudi fc', 'al-ettifaq fc', 'al-fateh sc', 'al-fayha fc', 'al-hazem sc', 'al-hilal sfc', 'al-ittihad club', 'al-khaleej fc', 'al-nassr fc', 'al-okhdood club', 'al-raed sfc', 'al-riyadh sc', 'al-shabab fc', 'al-taawoun fc', 'al-tai fc', 'al-wehda fc', 'abha club', 'damac fc',
+            'beijing guoan', 'changchun yatai', 'chengdu rongcheng', 'cangzhou mighty lions', 'dalian professional', 'henan fc', 'meizhou hakka', 'nantong zhiyun', 'qingdao hainiu', 'shandong taishan', 'shanghai port', 'shanghai shenhua', 'shenzhen fc', 'tianjin jinmen tiger', 'wuhan three towns', 'zhejiang professional'
+        ].map(normalizeClubName);
+
+        const midTierClubNamesNormalized = [
+            'birmingham city', 'blackburn rovers', 'bristol city', 'cardiff city', 'coventry city', 'huddersfield town', 'hull city', 'ipswich town', 'leeds united', 'leicester city', 'middlesbrough', 'millwall', 'norwich city', 'plymouth argyle', 'preston north end', 'queens park rangers', 'sheffield wednesday', 'southampton', 'stoke city', 'sunderland', 'swansea city', 'watford', 'west bromwich albion',
+            'aberdeen', 'dundee', 'heart of midlothian', 'hibernian', 'kilmarnock', 'livingston', 'motherwell', 'ross county', 'st. johnstone', 'st. mirren',
+            'kasimpasa sk', 'sivasspor', 'alanyaspor', 'caykur rizespor', 'antalyaspor', 'gaziantep fk', 'adana demirspor', 'samsunspor', 'kayserispor', 'hatayspor', 'konyaspor', 'eyupspor', 'goztepe', 'bodrum fk',
+            'rubin kazan', 'fc rostov', 'krylia sovetov samara', 'akhmat grozny', 'pari nizhny novgorod', 'fc khimki', 'fakel voronezh', 'fc orenburg', 'ural yekaterinburg',
+            'almere city fc', 'fc twente', 'fc utrecht', 'az alkmaar', 'vitesse arnhem', 'sc heerenveen', 'sparta rotterdam', 
+            'uc sampdoria', 'parma calcio 1913', 'palermo fc', 'brescia calcio', 'como 1907', 'venezia fc', 'cagliari calcio', 'empoli fc', 'frosinone calcio', 'us lecce', 'ac monza', 'us salernitana 1919', 
+            'girondins de bordeaux', 'as saint-etienne', 'angers sco', 'aj auxerre', 'sm caen', 'grenoble foot 38', 'stade brestois 29', 'clermont foot 63', 'le havre ac', 'fc lorient', 'fc metz', 
+            'sc braga', 'vitoria guimaraes', 
+            'atlanta united fc', 'austin fc', 'charlotte fc', 'chicago fire fc', 'fc cincinnati', 'colorado rapids', 'columbus crew', 'dc united', 'fc dallas', 'houston dynamo fc', 'inter miami cf', 'la galaxy', 'los angeles fc', 'minnesota united fc', 'cf montreal', 'nashville sc', 'new england revolution', 'new york city fc', 'new york red bulls', 'orlando city sc', 'philadelphia union', 'portland timbers', 'real salt lake', 'san jose earthquakes', 'seattle sounders fc', 'sporting kansas city', 'st. louis city sc', 'toronto fc', 'vancouver whitecaps fc',
+            'sv darmstadt 98', 'burnley', 'sheffield united', 
+            'cadiz cf', 'granada cf', 
+            '1. fc koln' 
+        ].map(normalizeClubName);
+
+        const lowerTierClubNamesNormalized = [
+            'barnsley', 'blackpool', 'bolton wanderers', 'burton albion', 'cambridge united', 'carlisle united', 'charlton athletic', 'cheltenham town', 'derby county', 'exeter city', 'fleetwood town', 'lincoln city', 'northampton town', 'oxford united', 'peterborough united', 'port vale', 'portsmouth', 'reading', 'shrewsbury town', 'stevenage', 'stockport county', 'wigan athletic', 'wycombe wanderers', 'bristol rovers',
+            'accrington stanley', 'afc wimbledon', 'barrow', 'bradford city', 'colchester united', 'crawley town', 'crewe alexandra', 'doncaster rovers', 'forest green rovers', 'gillingham', 'grimsby town', 'harrogate town', 'mansfield town', 'milton keynes dons', 'morecambe', 'newport county', 'notts county', 'salford city', 'sutton united', 'swindon town', 'tranmere rovers', 'walsall', 'wrexham',
+            "airdrieonians", "ayr united", "dundee united", "dunfermline athletic", "greenock morton", "hamilton academical", "inverness caledonian thistle", "partick thistle", "queen's park", "raith rovers", 
+            "alloa athletic", "annan athletic", "arbroath", "cove rangers", "dumbarton", "falkirk", "kelty hearts", "montrose", "queen of the south", "stenhousemuir",
+            "bonnyrigg rose", "clyde", "east fife", "edinburgh city", "elgin city", "forfar athletic", "peterhead", "spartans", "stirling albion", "stranraer",
+            'ado den haag', 'de graafschap', 'fc dordrecht', 'fc eindhoven', 'fc den bosch', 'fc emmen', 'helmond sport', 'mvv maastricht', 'nac breda', 'roda jc kerkrade', 'sc cambuur', 'telstar', 'top oss',
+            'albacete balompie', 'ad alcorcon', 'sd amorebieta', 'fc andorra', 'burgos cf', 'fc cartagena', 'cd eldense', 'rcd espanyol', 'racing de ferrol', 'sd huesca', 'cd leganes', 'levante ud', 'cd mirandes', 'real oviedo', 'racing santander', 'real valladolid', 'real zaragoza', 'sd eibar', 'sporting gijon', 'cd tenerife', 'villarreal b', 'elche cf', 
+            '1. fc kaiserslautern', 'karlsruher sc', '1. fc magdeburg', '1. fc nurnberg', 'sc paderborn 07', 'holstein kiel', 'fortuna dusseldorf', 'hannover 96', 'hamburger sv', 'hertha bsc', 'fc st. pauli', 'eintracht braunschweig', 'spvgg greuther furth', 'sv wehen wiesbaden', 'fc schalke 04', 'vfl osnabruck', 'arminia bielefeld', 'fc hansa rostock', 
+            'ascoli calcio 1898 fc', 'ssc bari', 'us catanzaro 1929', 'cosenza calcio', 'us cremonese', 'feralpisaò', 'modena fc', 'pisa sc', 'ac reggiana 1919', 'spezia calcio', 'fc sudtirol', 'ternana calcio', 'as cittadella', 'benevento calcio', 
+            'ac ajaccio', 'amiens sc', 'sc bastia', 'us concarneau', 'usl dunkerque', 'en avant guingamp', 'stade lavallois', 'paris fc', 'pau fc', 'us quevilly-rouen', 'rodez af', 'estac troyes', 'valenciennes fc',
+            'ankaragucu', 'fatih karagumruk', 'pendikspor', 'istanbulspor as'
+        ].map(normalizeClubName);
+        
+        const topTierClubs = [...new Set(topTierClubNamesNormalized)];
+        const midTierClubs = [...new Set(midTierClubNamesNormalized.filter(name => !topTierClubs.includes(name)))];
+        const lowerTierClubs = [...new Set(lowerTierClubNamesNormalized.filter(name => !topTierClubs.includes(name) && !midTierClubs.includes(name)))];
+
+        const eliteEuropeanTopTierClubNamesForWonderkid = [
+            'Arsenal', 'Chelsea', 'Liverpool', 'Manchester City', 'Manchester United', 'Tottenham Hotspur',
+            'Paris Saint-Germain', 'Olympique Lyonnais', 'Olympique de Marseille', 'AS Monaco', 'Lille OSC',
+            'Bayern Munich', 'Borussia Dortmund', 'Bayer 04 Leverkusen', 'RB Leipzig', 'Eintracht Frankfurt',
+            'Real Madrid', 'Barcelona', 'Atlético Madrid', 'Sevilla FC', 'Valencia CF', 'Real Sociedad',
+            'Juventus FC', 'Inter Milan', 'AC Milan', 'SSC Napoli', 'AS Roma', 'SS Lazio', 'ACF Fiorentina', 'Atalanta BC'
+        ];
+        const eliteEuropeanTopTierClubsWonderkid = [...new Set(eliteEuropeanTopTierClubNamesForWonderkid.map(normalizeClubName).filter(name => topTierClubs.includes(name)))];
+
+        // MODIFICATION: Updated createJourneyman function
+        function createJourneyman() {
+            const errorMessagesDiv = document.getElementById('autoGenErrorMessages'); // Target new error div
+            errorMessagesDiv.innerHTML = ''; 
+
+            const careerLengthInput = document.getElementById('careerLength');
+            const careerLength = careerLengthInput.value ? parseInt(careerLengthInput.value) : 0;
+
+            let localErrors = []; 
+
+            if (!careerLengthInput.value) { 
+                localErrors.push('Please enter a career length for Journeyman.');
+            } else {
+                if (careerLength < 10) {
+                    localErrors.push('Minimum career length for a Journeyman is 10 seasons.');
+                }
+                if (careerLength > 40) { 
+                    localErrors.push('Maximum career length for a Journeyman is 40 seasons.');
+                }
+            }
+            
+            if (!document.getElementById('playerName').value) localErrors.push('Player name is required for Journeyman.');
+            if (!document.getElementById('dateOfBirth').value) localErrors.push('Date of birth is required for Journeyman.');
+            if (!document.getElementById('youthClub').value) localErrors.push('Youth club is required for Journeyman.');
+
+
+            if (localErrors.length > 0) {
+                errorMessagesDiv.innerHTML = '<div class="error">' + localErrors.join('<br>') + '</div>';
+                return;
+            }
+            // Clear general errors if specific auto-gen validation passes
+            document.getElementById('errorMessages').innerHTML = ''; 
+            generateJourneymanCareer();
+        }
+        // END MODIFICATION
+
+        function generateJourneymanCareer() {
+            const formData = {
+                name: document.getElementById('playerName').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                placeOfBirth: document.getElementById('placeOfBirth').value,
+                position: document.getElementById('position').value,
+                heightCm: document.getElementById('heightCm').value,
+                youthClub: normalizeClubName(document.getElementById('youthClub').value), 
+                country: document.getElementById('country').value, 
+                caps: document.getElementById('caps').value
+            };
+
+            const birthYear = new Date(formData.dateOfBirth).getFullYear(); 
+            const youthStartYear = birthYear + 11;
+            const youthEndYear = birthYear + 16;
+            const seniorStartYear = birthYear + 16;
+            const careerLength = parseInt(document.getElementById('careerLength').value);
+
+            const clubs = [];
+            let currentYear = seniorStartYear;
+            let seasonsRemaining = careerLength;
+            let usedClubs = new Set(); 
+
+            while (seasonsRemaining > 0 && clubs.length < 20) { 
+                const playerAge = currentYear - birthYear;
+                let currentClubTierArray; 
+                
+                if (playerAge >= 21 && playerAge <= 27) { 
+                    const tierChance = Math.random();
+                    if (tierChance < 0.4 && topTierClubs.length > 0) currentClubTierArray = topTierClubs;
+                    else if (tierChance < 0.7 && midTierClubs.length > 0) currentClubTierArray = midTierClubs;
+                    else currentClubTierArray = lowerTierClubs.length > 0 ? lowerTierClubs : midTierClubs; 
+                } else if (playerAge >= 28 && playerAge <= 32) { 
+                    const tierChance = Math.random();
+                    if (tierChance < 0.2 && topTierClubs.length > 0) currentClubTierArray = topTierClubs;
+                    else if (tierChance < 0.6 && midTierClubs.length > 0) currentClubTierArray = midTierClubs;
+                    else currentClubTierArray = lowerTierClubs.length > 0 ? lowerTierClubs : midTierClubs;
+                } else { 
+                    const tierChance = Math.random();
+                    if (tierChance < 0.1 && topTierClubs.length > 0) currentClubTierArray = topTierClubs;
+                    else if (tierChance < 0.3 && midTierClubs.length > 0) currentClubTierArray = midTierClubs;
+                    else currentClubTierArray = lowerTierClubs.length > 0 ? lowerTierClubs : midTierClubs;
+                }
+                if (!currentClubTierArray || currentClubTierArray.length === 0) currentClubTierArray = footballClubs; 
+                
+                let clubName;
+                let attempts = 0;
+                do {
+                    clubName = currentClubTierArray[Math.floor(Math.random() * currentClubTierArray.length)];
+                    attempts++;
+                } while (usedClubs.has(clubName) && attempts < 20 && currentClubTierArray.length > 1); 
+                
+                usedClubs.add(clubName); 
+                if (usedClubs.size > 5) {
+                    const usedArray = Array.from(usedClubs);
+                    usedClubs.clear();
+                    for (let i = Math.max(0, usedArray.length - 3); i < usedArray.length; i++) {
+                         usedClubs.add(usedArray[i]);
+                    }
+                }
+                
+                const maxStay = Math.min(2, seasonsRemaining);
+                const currentStintSeasons = Math.floor(Math.random() * maxStay) + 1;
+                
+                const isBenchwarmer = Math.random() < 0.2;
+                const isProlific = Math.random() < 0.2; 
+                const stats = generateStats(formData.position, currentStintSeasons, false, isBenchwarmer, false, 1.0, isProlific); 
+                
+                clubs.push({
+                    name: clubName, 
+                    yearStart: currentYear,
+                    yearEnd: currentYear + currentStintSeasons,
+                    seasons: currentStintSeasons,
+                    appearances: stats.appearances,
+                    goals: stats.goals,
+                    isLoan: false,
+                    isBenchwarmer: isBenchwarmer,
+                    isProlific: isProlific 
+                });
+                
+                currentYear += currentStintSeasons;
+                seasonsRemaining -= currentStintSeasons;
+                
+                if (seasonsRemaining >= 1 && Math.random() < 0.3 && clubs.length > 0 && clubs.length < 19) { 
+                    const parentClubData = clubs[clubs.length - 1];
+                    let loanableTierPool = []; 
+                    if (currentClubTierArray === topTierClubs) {
+                        if (Math.random() < 0.1 && topTierClubs.length > 0) loanableTierPool.push(...topTierClubs);
+                        if (midTierClubs.length > 0) loanableTierPool.push(...midTierClubs, ...midTierClubs); 
+                        if (lowerTierClubs.length > 0) loanableTierPool.push(...lowerTierClubs);
+                    } else if (currentClubTierArray === midTierClubs) {
+                        if (Math.random() < 0.15 && midTierClubs.length > 0) loanableTierPool.push(...midTierClubs);
+                        if (lowerTierClubs.length > 0) loanableTierPool.push(...lowerTierClubs, ...lowerTierClubs); 
+                    } else { 
+                        if (lowerTierClubs.length > 0) loanableTierPool.push(...lowerTierClubs);
+                    }
+
+                    if (loanableTierPool.length === 0) { 
+                        loanableTierPool.push(...(lowerTierClubs.length > 0 ? lowerTierClubs : (midTierClubs.length > 0 ? midTierClubs : topTierClubs)));
+                    }
+
+                    if (loanableTierPool.length > 0) {
+                        let loanClubName;
+                        let loanAttempts = 0;
+                        do {
+                            loanClubName = loanableTierPool[Math.floor(Math.random() * loanableTierPool.length)];
+                            loanAttempts++;
+                        } while ((loanClubName === parentClubData.name || usedClubs.has(loanClubName + "_loan")) && loanAttempts < 20 && loanableTierPool.length > 1);
+                        
+                        usedClubs.add(loanClubName + "_loan"); 
+
+                        const isJanuaryTransfer = Math.random() < 0.3;
+                        const loanIsProlific = Math.random() < 0.05; 
+                        const loanStats = generateStats(formData.position, 1, false, false, isJanuaryTransfer, 1.0, loanIsProlific); 
+                        
+                        let loanStartYear, loanEndYear;
+                        if (isJanuaryTransfer) {
+                            loanStartYear = currentYear; 
+                            loanEndYear = currentYear;
+                        } else {
+                            loanStartYear = currentYear;
+                            loanEndYear = currentYear + 1;
+                        }
+                        
+                        clubs.push({
+                            name: loanClubName, 
+                            yearStart: loanStartYear,
+                            yearEnd: loanEndYear,
+                            seasons: 1,
+                            appearances: loanStats.appearances,
+                            goals: loanStats.goals,
+                            isLoan: true,
+                            isBenchwarmer: false, 
+                            isJanuaryTransfer: isJanuaryTransfer,
+                            parentClub: parentClubData.name,
+                            isProlific: loanIsProlific 
+                        });
+                        
+                        const reduction = isJanuaryTransfer ? 0.5 : 1;
+                        const adjustedParentSeasons = parentClubData.seasons - reduction;
+                        
+                        if (adjustedParentSeasons > 0) {
+                            const newParentStats = generateStats(formData.position, adjustedParentSeasons, false, parentClubData.isBenchwarmer, false, 1.0, parentClubData.isProlific);
+                            parentClubData.appearances = newParentStats.appearances;
+                            parentClubData.goals = newParentStats.goals;
+                        } else { 
+                             parentClubData.appearances = 0;
+                             parentClubData.goals = 0;
+                        }
+                        currentYear += 1; 
+                        seasonsRemaining -= 1;
+                    }
+                }
+            }
+
+            let initialInternationalStats = null; 
+            if (formData.caps && parseInt(formData.caps) > 0) {
+                const caps = parseInt(formData.caps);
+                const intlEquivalentSeasons = Math.max(1, caps / (Math.random() * 4 + 6)); 
+                const prolificIntlJourneyman = Math.random() < 0.1; 
+                const intlStatsRaw = generateStats(formData.position, intlEquivalentSeasons, true, false, false, 1.0, prolificIntlJourneyman); 
+                initialInternationalStats = {
+                    appearances: caps,
+                    goals: Math.floor(caps * (intlStatsRaw.goals / Math.max(1, intlStatsRaw.appearances)) || 0),
+                    isProlificForStats: prolificIntlJourneyman 
+                };
+                 if (formData.position === 'Goalkeeper' && !prolificIntlJourneyman && Math.random() > 0.02) {
+                    initialInternationalStats.goals = 0; 
+                 }
+            }
+            createWikipediaTable(formData, clubs, initialInternationalStats, youthStartYear, youthEndYear, seniorStartYear); // Pass seniorStartYear
+        }
+
+        function createWonderkidBurnout() {
+            // MODIFICATION: Add error handling specific to Wonderkid if needed, similar to Journeyman
+            const errorMessagesDiv = document.getElementById('autoGenErrorMessages'); 
+            errorMessagesDiv.innerHTML = ''; 
+            // For Wonderkid, career length is auto-calculated, so less direct input validation needed here for it
+            // but we still need basic fields
+            let localErrors = [];
+             if (!document.getElementById('playerName').value) localErrors.push('Player name is required for Wonderkid Burnout.');
+            if (!document.getElementById('dateOfBirth').value) localErrors.push('Date of birth is required for Wonderkid Burnout.');
+            if (!document.getElementById('youthClub').value) localErrors.push('Youth club is required for Wonderkid Burnout.');
+
+            if (localErrors.length > 0) {
+                errorMessagesDiv.innerHTML = '<div class="error">' + localErrors.join('<br>') + '</div>';
+                return;
+            }
+            document.getElementById('errorMessages').innerHTML = ''; 
+            // END MODIFICATION
+
+
+            const nameInput = document.getElementById('playerName');
+            const dobInput = document.getElementById('dateOfBirth');
+            const placeBirthInput = document.getElementById('placeOfBirth');
+            const positionInput = document.getElementById('position');
+            const youthClubInput = document.getElementById('youthClub'); 
+            const heightCmInput = document.getElementById('heightCm');
+            const heightFeetInput = document.getElementById('heightFeet');
+            const careerLengthInput = document.getElementById('careerLength');
+
+            const formData = {
+                name: nameInput.value,
+                dateOfBirth: dobInput.value,
+                placeOfBirth: placeBirthInput.value,
+                position: positionInput.value,
+                heightCm: heightCmInput.value,
+                youthClub: normalizeClubName(youthClubInput.value), 
+                country: document.getElementById('country').value,
+                caps: document.getElementById('caps').value
+            };
+
+            const birthYear = new Date(formData.dateOfBirth).getFullYear();
+            const youthStartYear = birthYear + 11;
+            const youthEndYear = birthYear + 16; 
+            const seniorStartYear = birthYear + 16;
+
+            const retirementAge = Math.floor(Math.random() * 4) + 25; 
+            const calculatedCareerLength = retirementAge - 16;
+            careerLengthInput.value = calculatedCareerLength; 
+
+            const clubs = [];
+            let currentYear = seniorStartYear;
+            let seasonsRemaining = calculatedCareerLength;
+            let usedClubs = new Set();
+
+            let firstClubSelectionPool = eliteEuropeanTopTierClubsWonderkid;
+            if (!firstClubSelectionPool || firstClubSelectionPool.length === 0) { 
+                firstClubSelectionPool = topTierClubs; 
+            }
+             if (!firstClubSelectionPool || firstClubSelectionPool.length === 0) { 
+                console.error("No top tier clubs available for Wonderkid generation.");
+                firstClubSelectionPool = footballClubs; 
+            }
+
+
+            if (seasonsRemaining > 0 && firstClubSelectionPool.length > 0) {
+                const wonderkidSeasons = Math.min(seasonsRemaining, Math.floor(Math.random() * 3) + 3); 
+                let clubName;
+                let attempts = 0;
+                do {
+                    clubName = firstClubSelectionPool[Math.floor(Math.random() * firstClubSelectionPool.length)]; 
+                    attempts++;
+                } while (usedClubs.has(clubName) && attempts < 20 && firstClubSelectionPool.length > 1);
+                usedClubs.add(clubName);
+
+                const isProlificWonderkid = true; 
+                const stats = generateStats(formData.position, wonderkidSeasons, false, false, false, 1.2, isProlificWonderkid); 
+
+                clubs.push({
+                    name: clubName, 
+                    yearStart: currentYear,
+                    yearEnd: currentYear + wonderkidSeasons,
+                    seasons: wonderkidSeasons,
+                    appearances: stats.appearances,
+                    goals: stats.goals,
+                    isLoan: false,
+                    isBenchwarmer: false,
+                    isProlific: isProlificWonderkid 
+                });
+                currentYear += wonderkidSeasons;
+                seasonsRemaining -= wonderkidSeasons;
+            }
+            
+            let currentTierPool = midTierClubs; 
+            while (seasonsRemaining > 0 && clubs.length < 20) {
+                if (!currentTierPool || currentTierPool.length === 0) { 
+                    currentTierPool = (currentTierPool === midTierClubs && lowerTierClubs.length > 0) ? lowerTierClubs : footballClubs;
+                }
+                 if (!currentTierPool || currentTierPool.length === 0) break; 
+
+                const stintSeasons = Math.min(seasonsRemaining, Math.floor(Math.random() * (currentTierPool === midTierClubs ? 3 : 2)) + 1); 
+                let clubName;
+                let attempts = 0;
+                do {
+                    clubName = currentTierPool[Math.floor(Math.random() * currentTierPool.length)];
+                    attempts++;
+                } while (usedClubs.has(clubName) && attempts < 20 && currentTierPool.length > 1);
+                usedClubs.add(clubName);
+
+                const isBenchwarmerDecline = Math.random() < (currentTierPool === midTierClubs ? 0.3 : 0.5);
+                const isProlificDecline = Math.random() < 0.3; 
+                const performanceFactorDecline = currentTierPool === midTierClubs ? 0.9 : 0.7;
+                const stats = generateStats(formData.position, stintSeasons, false, isBenchwarmerDecline, false, performanceFactorDecline, isProlificDecline);
+
+                clubs.push({
+                    name: clubName, 
+                    yearStart: currentYear,
+                    yearEnd: currentYear + stintSeasons,
+                    seasons: stintSeasons,
+                    appearances: stats.appearances,
+                    goals: stats.goals,
+                    isLoan: false,
+                    isBenchwarmer: isBenchwarmerDecline,
+                    isProlific: isProlificDecline 
+                });
+                currentYear += stintSeasons;
+                seasonsRemaining -= stintSeasons;
+
+                if (currentTierPool === midTierClubs && lowerTierClubs.length > 0) {
+                    currentTierPool = lowerTierClubs;
+                } else {
+                    if (!lowerTierClubs || lowerTierClubs.length === 0) break;
+                    currentTierPool = lowerTierClubs;
+                }
+            }
+            
+            let initialInternationalStats = null; 
+            if (formData.caps && parseInt(formData.caps) > 0) {
+                 const caps = parseInt(formData.caps);
+                 const intlEquivalentSeasons = Math.max(1, caps / (Math.random() * 3 + 5)); 
+                 const prolificIntlWonderkid = Math.random() < 0.2; 
+                 const intlStatsRaw = generateStats(formData.position, intlEquivalentSeasons, true, false, false, 1.1, prolificIntlWonderkid); 
+                 initialInternationalStats = {
+                     appearances: caps,
+                     goals: Math.floor(caps * (intlStatsRaw.goals / Math.max(1, intlStatsRaw.appearances)) || 0),
+                     isProlificForStats: prolificIntlWonderkid
+                 };
+                 if (formData.position === 'Goalkeeper' && !prolificIntlWonderkid && Math.random() > 0.01) {
+                    initialInternationalStats.goals = 0;
+                 }
+            }
+            createWikipediaTable(formData, clubs, initialInternationalStats, youthStartYear, youthEndYear, seniorStartYear); // Pass seniorStartYear
+        }
+
+        function generateStats(position, seasons, isInternational, isBenchwarmer, isHalfSeason, performanceFactor = 1.0, isProlific = false) {
+            const baseStats = { 
+                'Goalkeeper':         { appsPerSeason: [25, 35], goalRatio: 0.001}, 
+                'Left-Back':          { appsPerSeason: [20, 30], goalRatio: 0.07  },
+                'Centre-Back':        { appsPerSeason: [25, 35], goalRatio: 0.05  },
+                'Right-Back':         { appsPerSeason: [20, 30], goalRatio: 0.07  },
+                'Midfielder':         { appsPerSeason: [25, 35], goalRatio: 0.11  },
+                'Attacking Midfielder':{ appsPerSeason: [25, 35], goalRatio: 0.22},
+                'Defensive Midfielder':{ appsPerSeason: [25, 35], goalRatio: 0.06},
+                'Right Winger':       { appsPerSeason: [20, 30], goalRatio: 0.18  },
+                'Left Winger':        { appsPerSeason: [20, 30], goalRatio: 0.18  },
+                'Striker':            { appsPerSeason: [25, 35], goalRatio: 0.40  }
+            };
+
+            const statsConf = baseStats[position] || baseStats['Midfielder'];
+            let randomFactor = (0.8 + Math.random() * 0.4) * performanceFactor; 
+            
+            if (isBenchwarmer) {
+                randomFactor *= (0.30 + Math.random() * 0.2); 
+            }
+            
+            if (isHalfSeason) {
+                randomFactor *= 0.5; 
+            }
+            
+            const effectiveSeasons = Math.max(0.1, seasons);
+            const minApps = Math.max(0, Math.round(statsConf.appsPerSeason[0] * effectiveSeasons * randomFactor));
+            const maxApps = Math.max(minApps, Math.round(statsConf.appsPerSeason[1] * effectiveSeasons * randomFactor));
+            let appearances = Math.floor(Math.random() * (maxApps - minApps + 1)) + minApps;
+            if (isBenchwarmer && appearances < 1 && seasons > 0 && effectiveSeasons > 0) { 
+                appearances = Math.floor(Math.random() * Math.min(5, Math.round(statsConf.appsPerSeason[0] * effectiveSeasons * 0.5)));
+            }
+
+            let currentGoalRatio = statsConf.goalRatio;
+            let goalRandomness = (0.7 + Math.random() * 0.6); 
+            let goals = Math.floor(appearances * currentGoalRatio * randomFactor * goalRandomness);
+            
+            if (position === 'Goalkeeper') {
+                goals = 0; 
+                if (Math.random() < 0.02) { 
+                    goals = 1; 
+                }
+            }
+            
+            if (isProlific) { 
+                if (position === 'Goalkeeper') {
+                    if (goals > 0) { // If the 2% base chance hit
+                        goals = Math.round(goals * 2.0);
+                    } else if (Math.random() < 0.15) { // 15% separate chance for prolific GK
+                         goals = Math.floor(Math.random() * (Math.max(1, Math.ceil(seasons / 2)))) + 1; 
+                         goals = Math.min(goals, Math.floor(seasons * 0.6), 4);
+                    }
+                } else { // Outfielders
+                    goals = Math.round(goals * 2.0);
+                }
+            }
+            
+            if (isInternational) {
+                goals = Math.floor(goals * (0.5 + Math.random() * 0.2)); 
+                if (position === 'Goalkeeper' && !isProlific) goals = 0; 
+                else if (position === 'Goalkeeper' && isProlific && goals > 0) goals = Math.max(0, Math.floor(goals * 0.5)); 
+            }
+
+            if (appearances < goals) goals = appearances; 
+            if (goals < 0) goals = 0;
+            if (appearances < 0) appearances = 0;
+            
+            return { appearances: appearances, goals: goals, isProlificForStats: isProlific }; 
+        }
+
+        function validateForm() {
+            const errors = [];
+            if (!document.getElementById('playerName').value) errors.push('Player name is required');
+            if (!document.getElementById('dateOfBirth').value) errors.push('Date of birth is required');
+            if (!document.getElementById('placeOfBirth').value) errors.push('Place of birth is required');
+            if (!document.getElementById('position').value) errors.push('Position is required');
+            
+            const careerLengthValStr = document.getElementById('careerLength').value; 
+            if (!careerLengthValStr) { 
+                errors.push('Career length is required.');
+            } else {
+                const careerLengthVal = parseInt(careerLengthValStr);
+                if (careerLengthVal <=0) errors.push('Career length must be positive.'); // Basic check
+
+                const capsValStr = document.getElementById('caps').value;
+                if (capsValStr) { 
+                    const capsVal = parseInt(capsValStr);
+                    if (capsVal < 0) errors.push('International caps cannot be negative.'); 
+                    if (capsVal > 250) {
+                        errors.push('International caps cannot exceed 250.');
+                    }
+                    // Only validate caps vs career length if both are positive numbers
+                    if (careerLengthVal > 0 && capsVal > 0 && capsVal > (careerLengthVal * 15) ) {
+                         errors.push(`International caps (${capsVal}) cannot exceed 15 per season for the total career length of ${careerLengthVal} seasons (max allowed: ${careerLengthVal * 15}).`);
+                    }
+                }
+            }
+            
+            const youthClubInput = document.getElementById('youthClub');
+            const normalizedYouthClub = normalizeClubName(youthClubInput.value);
+            if (!normalizedYouthClub) errors.push('Youth club is required');
+            else youthClubInput.value = normalizedYouthClub; 
+
+            const heightCm = document.getElementById('heightCm').value;
+            const heightFeet = document.getElementById('heightFeet').value;
+            if (!heightCm && !heightFeet) errors.push('Height is required');
+            
+            const firstClubInputElement = document.querySelector('#seniorClubs .club-entry:first-child .club-input');
+            if (firstClubInputElement) {
+                const normalizedFirstClub = normalizeClubName(firstClubInputElement.value);
+                if (!normalizedFirstClub) errors.push('First club name is required');
+                else firstClubInputElement.value = normalizedFirstClub; 
+            } else {
+                 errors.push('First club entry is missing.');
+            }
+
+            const firstSeasonsInput = document.querySelector('#seniorClubs .club-entry:first-child .seasons-input');
+            if (!firstSeasonsInput || !firstSeasonsInput.value) errors.push('Seasons for first club is required');
+            
+            if (careerLengthValStr) { 
+                const careerLength = parseInt(careerLengthValStr);
+                if (careerLength > 0 && !isNaN(careerLength)) { // Proceed only if careerLength is valid
+                    const clubEntries = document.querySelectorAll('.club-entry');
+                    let totalSeasons = 0;
+                    let currentParentClubNameValidation = null;
+                    let parentClubSeasonsValidation = 0;
+                    let loanSeasonsInParentStintValidation = 0;
+                    
+                    clubEntries.forEach((entry, index) => {
+                        const clubInput = entry.querySelector('.club-input');
+                        const seasonsInput = entry.querySelector('.seasons-input');
+                        const loanCheckbox = entry.querySelector('.loan-checkbox');
+                        
+                        if (clubInput && seasonsInput ) { 
+                            const normalizedClubNameInEntry = normalizeClubName(clubInput.value);
+                            clubInput.value = normalizedClubNameInEntry; 
+
+                            if (normalizedClubNameInEntry && seasonsInput.value) {
+                                const seasons = parseInt(seasonsInput.value);
+                                const isLoan = loanCheckbox && loanCheckbox.checked;
+                                
+                                if (isLoan) {
+                                    if (index === 0) {
+                                        errors.push('First club cannot be a loan.'); return;
+                                    }
+                                    if (!currentParentClubNameValidation) { 
+                                        errors.push(`Loan club "${clubDisplayNames[normalizedClubNameInEntry] || normalizedClubNameInEntry}" must have a parent club directly above it or as the last non-loan entry.`); return;
+                                    }
+                                    loanSeasonsInParentStintValidation += seasons;
+                                    if (loanSeasonsInParentStintValidation > parentClubSeasonsValidation) {
+                                         errors.push(`Total loan seasons (${loanSeasonsInParentStintValidation}) for parent club "${clubDisplayNames[currentParentClubNameValidation] || currentParentClubNameValidation}" (which has ${parentClubSeasonsValidation} seasons) are too many.`);
+                                    }
+                                } else { 
+                                    if(currentParentClubNameValidation) { 
+                                       totalSeasons += parentClubSeasonsValidation;
+                                    }
+                                    currentParentClubNameValidation = normalizedClubNameInEntry;
+                                    parentClubSeasonsValidation = seasons;
+                                    loanSeasonsInParentStintValidation = 0; 
+                                }
+                            }
+                        }
+                    });
+                    if (currentParentClubNameValidation) {
+                        totalSeasons += parentClubSeasonsValidation;
+                    }
+
+                    if (totalSeasons !== careerLength) { 
+                        errors.push('Total seasons at parent clubs (' + totalSeasons + ') must match career length (' + careerLength + '). Loan seasons are part of parent club stints.');
+                    }
+                }
+            }
+            return errors;
+        }
+
+        function generateCareerTable() { 
+            const formData = {
+                name: document.getElementById('playerName').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                placeOfBirth: document.getElementById('placeOfBirth').value,
+                position: document.getElementById('position').value,
+                heightCm: document.getElementById('heightCm').value,
+                youthClub: normalizeClubName(document.getElementById('youthClub').value), 
+                country: document.getElementById('country').value, 
+                caps: document.getElementById('caps').value
+            };
+
+            const birthYear = new Date(formData.dateOfBirth).getFullYear(); 
+            const youthStartYear = birthYear + 11;
+            const youthEndYear = birthYear + 16;
+            const seniorStartYear = birthYear + 16; // Passed to createWikipediaTable
+
+            const clubs = [];
+            let currentYear = seniorStartYear;
+            let currentParentClubName = null;
+            let parentClubStartYear = 0; 
+            let seasonsIntoParentStintForLoan = 0; 
+            let parentClubIndexForLoan = -1;
+
+            document.querySelectorAll('.club-entry').forEach(entry => {
+                const clubInput = entry.querySelector('.club-input');
+                const seasonsInput = entry.querySelector('.seasons-input');
+                const loanCheckbox = entry.querySelector('.loan-checkbox');
+                const benchwarmerCheckbox = entry.querySelector('.benchwarmer-checkbox');
+                const prolificCheckbox = entry.querySelector('.prolific-checkbox'); 
+                
+                const normalizedClubNameFromInput = normalizeClubName(clubInput.value);
+                clubInput.value = normalizedClubNameFromInput; 
+
+                if (normalizedClubNameFromInput && seasonsInput.value) {
+                    const seasons = parseInt(seasonsInput.value);
+                    const isLoan = loanCheckbox && loanCheckbox.checked;
+                    const isBenchwarmer = benchwarmerCheckbox && benchwarmerCheckbox.checked;
+                    const isProlific = prolificCheckbox && prolificCheckbox.checked; 
+
+                    if (isLoan) {
+                        if (!currentParentClubName) { console.error("Loan detected without a current parent club. Skipping."); return; }
+                        const isJanuaryTransfer = seasons === 1 && Math.random() < 0.3; 
+                        const stats = generateStats(formData.position, seasons, false, isBenchwarmer, isJanuaryTransfer, 1.0, isProlific);
+                        
+                        let loanDisplayStartYear, loanDisplayEndYear;
+                        loanDisplayStartYear = parentClubStartYear + seasonsIntoParentStintForLoan;
+                        loanDisplayEndYear = isJanuaryTransfer ? loanDisplayStartYear : loanDisplayStartYear + seasons;
+                        
+                        clubs.push({
+                            name: normalizedClubNameFromInput, 
+                            yearStart: loanDisplayStartYear,
+                            yearEnd: loanDisplayEndYear,
+                            seasons: seasons,
+                            appearances: stats.appearances,
+                            goals: stats.goals,
+                            isLoan: true,
+                            isBenchwarmer: isBenchwarmer,
+                            isJanuaryTransfer: isJanuaryTransfer,
+                            parentClub: currentParentClubName,
+                            isProlific: isProlific 
+                        });
+                        seasonsIntoParentStintForLoan += seasons; 
+                    } else { 
+                        currentParentClubName = normalizedClubNameFromInput; 
+                        parentClubStartYear = currentYear;
+                        seasonsIntoParentStintForLoan = 0; 
+
+                        const stats = generateStats(formData.position, seasons, false, isBenchwarmer, false, 1.0, isProlific);
+                        clubs.push({
+                            name: normalizedClubNameFromInput, 
+                            yearStart: currentYear,
+                            yearEnd: currentYear + seasons,
+                            seasons: seasons,
+                            seasons_original: seasons, 
+                            appearances: stats.appearances,
+                            goals: stats.goals,
+                            isLoan: false,
+                            isBenchwarmer: isBenchwarmer,
+                            isProlific: isProlific 
+                        });
+                        parentClubIndexForLoan = clubs.length -1;
+                        currentYear += seasons;
+                    }
+                }
+            });
+            
+            let initialInternationalStats = null; 
+            if (formData.caps && parseInt(formData.caps) > 0) {
+                const caps = parseInt(formData.caps);
+                const intlEquivalentSeasons = Math.max(1, caps / (Math.random() * 4 + 6));
+                const prolificIntl = Math.random() < 0.15; 
+                const intlStatsRaw = generateStats(formData.position, intlEquivalentSeasons, true, false, false, 1.0, prolificIntl);
+                initialInternationalStats = {
+                    appearances: caps, 
+                    goals: Math.floor(caps * (intlStatsRaw.goals / Math.max(1, intlStatsRaw.appearances)) || 0),
+                    isProlificForStats: prolificIntl 
+                };
+                 if (formData.position === 'Goalkeeper' && !prolificIntl && Math.random() > 0.02) {
+                    initialInternationalStats.goals = 0;
+                 }
+            }
+            createWikipediaTable(formData, clubs, initialInternationalStats, youthStartYear, youthEndYear, seniorStartYear); // Pass seniorStartYear
+        }
+
+        function getRandomDateInPastWindow(baseDate, maxYearsAgo, minYearsAgo = 0) {
+            const latestPossibleDeath = new Date(baseDate);
+            latestPossibleDeath.setFullYear(baseDate.getFullYear() - minYearsAgo);
+
+            const earliestPossibleDeath = new Date(baseDate);
+            earliestPossibleDeath.setFullYear(baseDate.getFullYear() - maxYearsAgo);
+
+            if (earliestPossibleDeath.getTime() >= latestPossibleDeath.getTime()) {
+                const targetYear = baseDate.getFullYear() - minYearsAgo; 
+                let month = baseDate.getMonth();
+                let day = baseDate.getDate();
+                if (maxYearsAgo < 1 && minYearsAgo === 0) { 
+                     return new Date(latestPossibleDeath.getTime() - Math.random() * (24*60*60*1000 * 30)); 
+                }
+                month = Math.floor(Math.random() * 12);
+                day = Math.floor(Math.random() * 28) + 1;
+                return new Date(targetYear, month, day);
+            }
+            
+            const timeRange = latestPossibleDeath.getTime() - earliestPossibleDeath.getTime();
+            if (timeRange <= 0) return latestPossibleDeath; 
+
+            const randomTimeOffset = Math.random() * timeRange;
+            return new Date(earliestPossibleDeath.getTime() + randomTimeOffset);
+        }
+
+        function createWikipediaTable(formData, clubsData, internationalStatsInput, youthStartYear, youthEndYear, seniorStartYear) { // seniorStartYear is now a parameter
+            const calculatedBirthYear = new Date(formData.dateOfBirth).getFullYear(); 
+
+            const displayClubs = JSON.parse(JSON.stringify(clubsData));
+            displayClubs.sort((a, b) => {
+                if (a.yearStart !== b.yearStart) return a.yearStart - b.yearStart;
+                if (a.isLoan !== b.isLoan) return a.isLoan ? 1 : -1; 
+                return 0;
+            });
+
+            const heightDisplay = formData.heightCm ?
+                (parseInt(formData.heightCm) / 100).toFixed(2) + ' m (' + Math.floor(parseInt(formData.heightCm) / 30.48) + 'ft ' + Math.round((parseInt(formData.heightCm) % 30.48) / 2.54) + 'in)' :
+                (document.getElementById('heightFeet').value && document.getElementById('heightInches').value ?
+                    document.getElementById('heightFeet').value + 'ft ' + document.getElementById('heightInches').value + 'in' : 'N/A');
+
+            const currentSystemDate = new Date(); 
+            const currentSystemYear = currentSystemDate.getFullYear();
+            const finalClubRecord = displayClubs.length > 0 ? displayClubs[displayClubs.length - 1] : null;
+            
+            let careerLengthValue = 0;
+            const careerLengthInput = document.getElementById('careerLength');
+            if (careerLengthInput && careerLengthInput.value) {
+                careerLengthValue = parseInt(careerLengthInput.value);
+            }
+
+            const finalCareerYear = finalClubRecord ? finalClubRecord.yearEnd : youthEndYear + careerLengthValue;
+            
+            const birthDateObj = new Date(formData.dateOfBirth); 
+            let ageToday = currentSystemYear - calculatedBirthYear;
+            if (currentSystemDate.getMonth() < birthDateObj.getMonth() || 
+               (currentSystemDate.getMonth() === birthDateObj.getMonth() && currentSystemDate.getDate() < birthDateObj.getDate())) {
+                ageToday--;
+            }
+
+            let deathInfo = null;
+            const deathRoll = Math.random();
+            let determinedDeathDate = null;
+
+            if (ageToday > 105) { 
+                const datePlayerTurned105 = new Date(calculatedBirthYear + 105, birthDateObj.getMonth(), birthDateObj.getDate());
+                determinedDeathDate = getRandomDateInPastWindow(datePlayerTurned105, 20, 0); 
+            } else if (ageToday >= 91 && ageToday <= 105) {
+                if (deathRoll < 0.90) { 
+                    determinedDeathDate = getRandomDateInPastWindow(currentSystemDate, 20, 0); 
+                }
+            } else if (ageToday >= 81 && ageToday <= 90) {
+                if (deathRoll < 0.50) { 
+                    determinedDeathDate = getRandomDateInPastWindow(currentSystemDate, 3, 0); 
+                }
+            } else if (ageToday >= 76 && ageToday <= 80) {
+                if (deathRoll < 0.20) { 
+                    determinedDeathDate = getRandomDateInPastWindow(currentSystemDate, 3, 0); 
+                }
+            }
+
+            if (determinedDeathDate) {
+                if (determinedDeathDate.getTime() < birthDateObj.getTime()) {
+                    const sensibleMinDeathYear = calculatedBirthYear + Math.max(70, (finalCareerYear - calculatedBirthYear) + 1); 
+                    determinedDeathDate = new Date(sensibleMinDeathYear, Math.floor(Math.random()*12), Math.floor(Math.random()*28)+1);
+                }
+                if (ageToday > 105) { 
+                    const maxDeathAgeForSuperOld = 105; 
+                    const maxDeathYearForSuperOld = calculatedBirthYear + maxDeathAgeForSuperOld;
+                     let preciseAgeAtDeterminedDeath = determinedDeathDate.getFullYear() - calculatedBirthYear;
+                     if (determinedDeathDate.getMonth() < birthDateObj.getMonth() || (determinedDeathDate.getMonth() === birthDateObj.getMonth() && determinedDeathDate.getDate() < birthDateObj.getDate())) {
+                        preciseAgeAtDeterminedDeath--;
+                     }
+                    if (preciseAgeAtDeterminedDeath > maxDeathAgeForSuperOld) { 
+                        determinedDeathDate.setFullYear(maxDeathYearForSuperOld);
+                        determinedDeathDate.setMonth(birthDateObj.getMonth()); 
+                        determinedDeathDate.setDate(birthDateObj.getDate()); 
+                    }
+                }
+
+                let preciseDeathAge = determinedDeathDate.getFullYear() - calculatedBirthYear; 
+                if (determinedDeathDate.getMonth() < birthDateObj.getMonth() ||
+                   (determinedDeathDate.getMonth() === birthDateObj.getMonth() && determinedDeathDate.getDate() < birthDateObj.getDate())) {
+                    preciseDeathAge--;
+                }
+                deathInfo = { date: determinedDeathDate, age: preciseDeathAge };
+            }
+
+            const viewingYear = Math.max(currentSystemYear, finalCareerYear); // Viewing year is now final career year or current, whichever is later
+            let displayAge = viewingYear - calculatedBirthYear; 
+            const infoboxViewingDate = new Date(viewingYear, currentSystemDate.getMonth(), currentSystemDate.getDate()); 
+            if (birthDateObj.getMonth() > infoboxViewingDate.getMonth() || 
+               (birthDateObj.getMonth() === infoboxViewingDate.getMonth() && birthDateObj.getDate() > infoboxViewingDate.getDate())) {
+                displayAge--;
+            }
+
+            let html = '<div class="player-infobox"><div class="player-name-header">' + formData.name + '</div><div class="player-photo">';
+            let photoHtml = '';
+            if (playerPhotoUrl) {
+                let imgClass = "";
+                if (finalCareerYear < 1970) { 
+                    imgClass = ' class="img-bw-filter"';
+                }
+                photoHtml = `<img src="${playerPhotoUrl}" alt="${formData.name}"${imgClass}>`;
+            } else {
+                photoHtml = '<div class="placeholder">[Player Photo]</div>';
+            }
+            html += photoHtml;
+
+            let photoCaption = '';
+            if (playerPhotoUrl && displayClubs.length > 0) {
+                const randomClubContext = displayClubs[Math.floor(Math.random() * displayClubs.length)];
+                const captionClubName = clubDisplayNames[randomClubContext.name] || randomClubContext.name;
+                const randomYearContext = randomClubContext.yearStart + Math.floor(Math.random() * (randomClubContext.yearEnd - randomClubContext.yearStart + (randomClubContext.yearStart === randomClubContext.yearEnd ? 1:0) ));
+                const nameParts = formData.name.split(' ');
+                const lastName = nameParts[nameParts.length - 1];
+                const captionTemplates = [
+                    lastName + ' with ' + captionClubName + ' in ' + randomYearContext,
+                    lastName + ' celebrating a goal for ' + captionClubName + ' in ' + randomYearContext,
+                    lastName + ' during the ' + randomYearContext + ' season',
+                ];
+                if (formData.country && internationalStatsInput) { 
+                    captionTemplates.push(lastName + ' representing ' + formData.country + ' circa ' + randomYearContext );
+                }
+                photoCaption = captionTemplates[Math.floor(Math.random() * captionTemplates.length)];
+            } else if (!playerPhotoUrl) {
+                 photoCaption = 'No public photos are available of this player';
+            } else {
+                 photoCaption = formData.name;
+            }
+            html += '</div><div class="photo-caption">' + photoCaption + '</div><div class="personal-info-header">Personal information</div><table class="info-table"><tr><td>Full name</td><td>' + formData.name + '</td></tr>';
+
+            if (deathInfo) {
+                html += '<tr><td>Date of birth</td><td>' + formatDateWiki(formData.dateOfBirth) + '</td></tr>';
+                html += '<tr><td>Date of death</td><td>' + formatDateWiki(deathInfo.date) + '<br><span style="font-size: 10px;">(aged ' + deathInfo.age + ')</span></td></tr>';
+            } else {
+                html += '<tr><td>Date of birth</td><td>' + formatDateWiki(formData.dateOfBirth) + '<br><span style="font-size: 10px;">(age ' + displayAge + ')</span></td></tr>';
+            }
+            
+            html += '<tr><td>Place of birth</td><td>' + formData.placeOfBirth + '</td></tr><tr><td>Height</td><td>' + heightDisplay + '</td></tr><tr><td>Position(s)</td><td>' + formData.position + '</td></tr></table>';
+
+            const youthClubDisplayName = clubDisplayNames[formData.youthClub] || formData.youthClub;
+            const youthClubUrlTerm = youthClubDisplayName.replace(/\s+/g, '_');
+            const youthClubWikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(youthClubUrlTerm)}`;
+            html += '<div class="career-section-header">Youth career</div><table class="career-table"><tr><th style="width: 25%;">Years</th><th style="width: 75%;">Team</th></tr><tr><td>' + youthStartYear + '–' + youthEndYear + '</td><td class="team-name"><a href="' + youthClubWikiUrl + '" target="_blank" rel="noopener noreferrer">' + youthClubDisplayName + '</a></td></tr></table>';
+
+            html += '<div class="career-section-header">Senior career*</div><table class="career-table"><tr><th>Years</th><th>Team</th><th>Apps</th><th>(Gls)</th></tr>';
+
+            let totalApps = 0;
+            let totalGoals = 0;
+            displayClubs.forEach(club => {
+                const yearRange = club.yearStart === club.yearEnd ? 
+                    club.yearStart.toString() : 
+                    club.yearStart + '–' + club.yearEnd;
+                
+                const seniorClubDisplayName = clubDisplayNames[club.name] || club.name;
+                const seniorClubUrlTerm = seniorClubDisplayName.replace(/\s+/g, '_');
+                const seniorClubWikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(seniorClubUrlTerm)}`;
+
+                if (club.isLoan) {
+                    html += '<tr><td style="white-space: nowrap;">' + yearRange + '</td><td class="team-name">→ <a href="' + seniorClubWikiUrl + '" target="_blank" rel="noopener noreferrer">' + seniorClubDisplayName + '</a> (loan)</td><td>' + club.appearances + '</td><td>(' + club.goals + ')</td></tr>';
+                } else {
+                    html += '<tr><td style="white-space: nowrap;">' + yearRange + '</td><td class="team-name"><a href="' + seniorClubWikiUrl + '" target="_blank" rel="noopener noreferrer">' + seniorClubDisplayName + '</a></td><td>' + club.appearances + '</td><td>(' + club.goals + ')</td></tr>';
+                }
+                totalApps += club.appearances;
+                totalGoals += club.goals;
+            });
+
+            html += '<tr class="career-total"><td>Total</td><td></td><td>' + totalApps + '</td><td>(' + totalGoals + ')</td></tr></table>';
+
+            let finalInternationalStatsForDisplay = null; 
+            if (formData.country && formData.caps && parseInt(formData.caps) > 0) {
+                let rawUserCaps = parseInt(formData.caps);
+
+                let intlDurationInSeasonsFromCapsBracket = 0;
+                if (rawUserCaps <= 0) intlDurationInSeasonsFromCapsBracket = 0;
+                else if (rawUserCaps <= 15) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 2; 
+                else if (rawUserCaps <= 30) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 4; 
+                else if (rawUserCaps <= 60) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 6; 
+                else if (rawUserCaps <= 100) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 8; 
+                else if (rawUserCaps <= 130) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 10; 
+                else if (rawUserCaps <= 160) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 12; 
+                else if (rawUserCaps <= 190) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 14; 
+                else if (rawUserCaps <= 220) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 16; 
+                else if (rawUserCaps <= 250) intlDurationInSeasonsFromCapsBracket = Math.floor(Math.random() * 2) + 18; 
+                
+                const earliestPossibleDebutYear = calculatedBirthYear + 18 + Math.floor(Math.random() * 3); 
+                const actualEarliestDebutYear = Math.max(seniorStartYear, earliestPossibleDebutYear); 
+
+                let latestPossibleIntCareerEndYear = finalCareerYear - Math.floor(Math.random() * 3); 
+                if (latestPossibleIntCareerEndYear < actualEarliestDebutYear) {
+                    latestPossibleIntCareerEndYear = actualEarliestDebutYear; 
+                }
+                
+                const maxPossiblePlayerIntlSpan = Math.max(0, latestPossibleIntCareerEndYear - actualEarliestDebutYear + 1);
+                
+                let actualDisplayIntlDuration = 0;
+                let actualCapsToDisplay = 0;
+                let displayIntDebutYear = actualEarliestDebutYear;
+                let displayIntEndYear = actualEarliestDebutYear -1; 
+
+                if (maxPossiblePlayerIntlSpan > 0 && rawUserCaps > 0) {
+                    actualDisplayIntlDuration = Math.min(intlDurationInSeasonsFromCapsBracket, maxPossiblePlayerIntlSpan);
+                    if(actualDisplayIntlDuration === 0 && rawUserCaps > 0) actualDisplayIntlDuration = 1; 
+
+                    actualCapsToDisplay = Math.min(rawUserCaps, actualDisplayIntlDuration * 15);
+                     if (actualCapsToDisplay <= 0 && rawUserCaps > 0 && actualDisplayIntlDuration > 0) { 
+                        actualCapsToDisplay = Math.min(rawUserCaps, actualDisplayIntlDuration * 15); 
+                        if (actualCapsToDisplay <= 0) actualCapsToDisplay = Math.min(rawUserCaps, 15); 
+                     } else if (actualCapsToDisplay <= 0 && rawUserCaps > 0 && actualDisplayIntlDuration === 0) {
+                        actualCapsToDisplay = 0; 
+                     }
+
+                    if (actualDisplayIntlDuration > 0) {
+                        const possibleStartSlots = maxPossiblePlayerIntlSpan - actualDisplayIntlDuration + 1;
+                        const startOffset = (possibleStartSlots > 0) ? Math.floor(Math.random() * possibleStartSlots) : 0;
+                        displayIntDebutYear = actualEarliestDebutYear + startOffset;
+                        displayIntEndYear = displayIntDebutYear + actualDisplayIntlDuration - 1;
+                        displayIntEndYear = Math.min(displayIntEndYear, latestPossibleIntCareerEndYear); 
+                        actualDisplayIntlDuration = Math.max(1, displayIntEndYear - displayIntDebutYear + 1); 
+                        actualCapsToDisplay = Math.min(rawUserCaps, actualDisplayIntlDuration * 15); 
+                    } else { 
+                        actualCapsToDisplay = 0;
+                    }
+                }
+
+                if (actualCapsToDisplay > 0) {
+                    let isProlificIntl = (internationalStatsInput && typeof internationalStatsInput.isProlificForStats !== 'undefined') 
+                                        ? internationalStatsInput.isProlificForStats 
+                                        : Math.random() < 0.15; 
+
+                    const intlEquivalentSeasonsForStats = Math.max(1, actualCapsToDisplay / (Math.random() * 5 + 10)); 
+                    const rawIntlStatsOutput = generateStats(formData.position, intlEquivalentSeasonsForStats, true, false, false, 1.0, isProlificIntl);
+
+                    finalInternationalStatsForDisplay = {
+                        appearances: actualCapsToDisplay,
+                        goals: Math.floor(actualCapsToDisplay * (rawIntlStatsOutput.goals / Math.max(1, rawIntlStatsOutput.appearances)) || 0)
+                    };
+
+                    if (formData.position === 'Goalkeeper') {
+                        if (isProlificIntl && finalInternationalStatsForDisplay.goals > 0) { 
+                             finalInternationalStatsForDisplay.goals = Math.max(1, Math.floor(finalInternationalStatsForDisplay.appearances / 20)); 
+                             finalInternationalStatsForDisplay.goals = Math.min(finalInternationalStatsForDisplay.goals, 4); 
+                        } else {
+                            finalInternationalStatsForDisplay.goals = 0; 
+                        }
+                    }
+                
+                    if (finalInternationalStatsForDisplay && finalInternationalStatsForDisplay.appearances > 0) {
+                        html += '<div class="career-section-header">International career</div><table class="career-table"><tr><th style="width: 20%;">Years</th><th style="width: 40%;">Team</th><th style="width: 20%;">Apps</th><th style="width: 20%;">(Gls)</th></tr>';
+                        
+                        const getIntlTeamWikiUrl = (countryName, ageSuffix = "") => {
+                            const countryUrlTerm = countryName.replace(/\s+/g, '_');
+                            if (ageSuffix) { 
+                                const ageNum = ageSuffix.substring(1); 
+                                return `https://en.wikipedia.org/wiki/${encodeURIComponent(countryUrlTerm)}_national_under-${ageNum}_football_team`;
+                            }
+                            return `https://en.wikipedia.org/wiki/${encodeURIComponent(countryUrlTerm)}_national_football_team`;
+                        };
+
+                        if (finalInternationalStatsForDisplay.appearances >= 20) { 
+                            const u17Start = calculatedBirthYear + 15; const u17End = calculatedBirthYear + 17;
+                            const u19Start = calculatedBirthYear + 17; const u19End = calculatedBirthYear + 19;
+                            const u21Start = calculatedBirthYear + 19; const u21End = calculatedBirthYear + 21;
+                            html += '<tr><td style="white-space: nowrap;">' + u17Start + '–' + u17End + '</td><td class="team-name"><a href="' + getIntlTeamWikiUrl(formData.country, "U17") + '" target="_blank" rel="noopener noreferrer">' + formData.country + ' U17</a></td><td>' + (Math.floor(Math.random()*5)+5) + '</td><td>(' + (Math.floor(Math.random()*2)) + ')</td></tr>';
+                            html += '<tr><td style="white-space: nowrap;">' + u19Start + '–' + u19End + '</td><td class="team-name"><a href="' + getIntlTeamWikiUrl(formData.country, "U19") + '" target="_blank" rel="noopener noreferrer">' + formData.country + ' U19</a></td><td>' + (Math.floor(Math.random()*5)+3) + '</td><td>(' + (Math.floor(Math.random()*2)) + ')</td></tr>';
+                            html += '<tr><td style="white-space: nowrap;">' + u21Start + '–' + u21End + '</td><td class="team-name"><a href="' + getIntlTeamWikiUrl(formData.country, "U21") + '" target="_blank" rel="noopener noreferrer">' + formData.country + ' U21</a></td><td>' + (Math.floor(Math.random()*7)+5) + '</td><td>(' + (Math.floor(Math.random()*3)+1) + ')</td></tr>';
+                        } else if (finalInternationalStatsForDisplay.appearances >= 10) {
+                            const u21Start = calculatedBirthYear + 18 + Math.floor(Math.random()*2); const u21End = u21Start + 2;
+                            html += '<tr><td style="white-space: nowrap;">' + u21Start + '–' + u21End + '</td><td class="team-name"><a href="' + getIntlTeamWikiUrl(formData.country, "U21") + '" target="_blank" rel="noopener noreferrer">' + formData.country + ' U21</a></td><td>' + (Math.floor(Math.random()*7)+3) + '</td><td>(' + (Math.floor(Math.random()*2)+1) + ')</td></tr>';
+                        }
+                        
+                        html += '<tr><td style="white-space: nowrap;">' + displayIntDebutYear + '–' + displayIntEndYear + '</td><td class="team-name"><a href="' + getIntlTeamWikiUrl(formData.country) + '" target="_blank" rel="noopener noreferrer">' + formData.country + '</a></td><td>' + finalInternationalStatsForDisplay.appearances + '</td><td>(' + finalInternationalStatsForDisplay.goals + ')</td></tr>';
+                        html += '</table>';
+                    }
+                }
+            }
+
+            html += '<div class="career-footnote">*Club domestic league appearances and goals</div><div class="career-footnote">‡ Created on myfootballcareer.wiki</div></div>';
+
+            document.getElementById('preview').innerHTML = html;
+            document.getElementById('preview').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            
+            document.getElementById('preview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatDateWiki(dateString) {
+            if (!dateString) return '';
+            const dateObj = (typeof dateString === 'string' && dateString.includes('-')) ? 
+                new Date(dateString + 'T00:00:00Z') : 
+                new Date(dateString);
+
+            if (isNaN(dateObj.getTime())) {
+                console.error("Invalid date provided to formatDateWiki:", dateString);
+                return "Invalid Date";
+            }
+
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return dateObj.getUTCDate() + ' ' + months[dateObj.getUTCMonth()] + ' ' + dateObj.getUTCFullYear();
+        }
+
+
+        function downloadTable() {
+            const previewElement = document.getElementById('preview');
+            
+            if (typeof html2canvas === 'undefined') {
+                alert('Download functionality is loading. Please try again in a moment or use browser print functionality.');
+                return;
+            }
+            
+            const infobox = previewElement.querySelector('.player-infobox');
+            if (!infobox) {
+                alert('No table found to download');
+                return;
+            }
+            
+            html2canvas(infobox, {
+                backgroundColor: 'white', 
+                scale: 2, 
+                useCORS: true, 
+                width: infobox.offsetWidth, 
+                height: infobox.offsetHeight 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const playerName = document.getElementById('playerName').value || 'player';
+                link.download = playerName.replace(/\s+/g, '_') + '_career_table.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.9); 
+                link.click();
+            }).catch(error => {
+                alert('Download functionality error. Please copy the table manually or use browser print functionality.');
+                console.error('Download error:', error);
+            });
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        script.integrity = 'sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==';
+        script.crossOrigin = 'anonymous';
+        script.referrerPolicy = 'no-referrer';
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>
