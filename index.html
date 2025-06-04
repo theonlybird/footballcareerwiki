@@ -24,7 +24,7 @@
         }
 
         h1 {
-            text-align: center;
+            text-align: center; 
             color: #ffd700;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
@@ -78,23 +78,41 @@
         
         .checkbox-group { 
             display: flex;
-            align-items: center;
+            align-items: center; 
             gap: 15px; 
         }
         .checkbox-group label { 
-            display: flex;
+            display: flex; 
             align-items: center;
             gap: 5px; 
-            margin: 0;
+            margin: 0; 
             font-size: 14px;
             font-weight: normal; 
             color: #fff; 
         }
         .checkbox-group input[type="checkbox"] {
-            width: auto;
+            width: auto; 
             margin-right: 0; 
         }
 
+        @media (max-width: 520px) { 
+            .checkbox-group {
+                flex-wrap: wrap; 
+                gap: 5px 10px; 
+            }
+            .checkbox-group h4 {
+                flex-basis: 100%; 
+                margin-bottom: 8px; 
+                text-align: left; 
+            }
+             .checkbox-group label { 
+                margin-bottom: 5px;
+            }
+            .checkbox-group label.loan-label-option { 
+                flex-basis: 100%; 
+                margin-top: 5px; 
+            }
+        }
 
         input, select {
             width: calc(100% - 22px);
@@ -120,7 +138,6 @@
         input[type="file"]::file-selector-button:hover {
             background-color: #e0e0e0;
         }
-
 
         input:focus, select:focus {
             outline: none;
@@ -196,166 +213,30 @@
             font-size: 11px;
         }
 
-        .player-name-header {
-            background: #ccccff;
-            text-align: center;
-            padding: 8px;
-            font-weight: bold;
-            font-size: 14px;
-            border-bottom: 1px solid #a2a9b1;
-        }
+        .player-name-header { background: #ccccff; text-align: center; padding: 8px; font-weight: bold; font-size: 14px; border-bottom: 1px solid #a2a9b1; }
+        .player-photo { text-align: center; padding: 6px 8px 4px 8px; background: white; }
+        .player-photo img { max-width: 220px; max-height: 280px; border: 1px solid #a2a9b1; display: block; margin: 0 auto; }
+        .img-bw-filter { filter: grayscale(100%); -webkit-filter: grayscale(100%); }
+        .player-photo .placeholder { width: 220px; height: 280px; background: #f0f0f0; border: 1px solid #a2a9b1; display: flex; align-items: center; justify-content: center; color: #666; font-style: italic; margin: 0 auto; }
+        .photo-caption { font-size: 10px; text-align: center; padding: 2px 8px 4px 8px; background: white; border-bottom: 1px solid #a2a9b1; }
+        .personal-info-header { background: #ccccff; text-align: center; padding: 4px 8px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #a2a9b1; }
+        .info-table { width: 100%; font-size: 11px; }
+        .info-table td { padding: 2px 8px; vertical-align: top; border-bottom: 1px solid #eaecf0; }
+        .info-table td:first-child { font-weight: bold; width: 35%; }
+        .career-table { border: 1px solid #a2a9b1; font-size: 11px; width: 100%; margin-top: 0; table-layout: auto; }
+        .career-table th, .career-table td { padding: 1px 4px; text-align: center; border-right: 1px solid #a2a9b1; border-bottom: 1px solid #eaecf0; font-size: 10px; white-space: nowrap; }
+        .career-section-header { background: #ccccff; padding: 4px 8px; text-align: center; font-weight: bold; border-bottom: 1px solid #a2a9b1; font-size: 11px; }
+        .career-table th { background: #eaecf0; padding: 2px 4px; text-align: center; font-weight: bold; border: 1px solid #a2a9b1; font-size: 10px; }
+        .career-table .team-name { text-align: left; font-weight: normal; padding-left: 6px; }
+        .career-table .team-name a { color: #0645ad; text-decoration: none; }
+        .career-table .team-name a:hover { text-decoration: underline; }
+        .career-total { font-weight: bold; background: #f8f9fa; }
+        .career-footnote { font-size: 9px; padding: 4px 8px; background: #f8f9fa; border-top: 1px solid #a2a9b1; text-align: center; }
+        .height-input { display: flex; gap: 10px; align-items: center; }
+        .height-input input { flex: 1; }
+        .photo-upload { margin: 15px 0; }
 
-        .player-photo {
-            text-align: center;
-            padding: 6px 8px 4px 8px; 
-            background: white;
-        }
-
-        .player-photo img {
-            max-width: 220px;
-            max-height: 280px;
-            border: 1px solid #a2a9b1;
-            display: block; 
-            margin: 0 auto; 
-        }
-        .img-bw-filter {
-            filter: grayscale(100%);
-            -webkit-filter: grayscale(100%); 
-        }
-
-
-        .player-photo .placeholder {
-            width: 220px;
-            height: 280px;
-            background: #f0f0f0;
-            border: 1px solid #a2a9b1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-style: italic;
-            margin: 0 auto;
-        }
-
-        .photo-caption {
-            font-size: 10px;
-            text-align: center;
-            padding: 2px 8px 4px 8px; 
-            background: white;
-            border-bottom: 1px solid #a2a9b1;
-        }
-
-        .personal-info-header {
-            background: #ccccff;
-            text-align: center;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 11px;
-            border-bottom: 1px solid #a2a9b1;
-        }
-
-        .info-table {
-            width: 100%;
-            font-size: 11px;
-        }
-
-        .info-table td {
-            padding: 2px 8px;
-            vertical-align: top;
-            border-bottom: 1px solid #eaecf0;
-        }
-
-        .info-table td:first-child {
-            font-weight: bold;
-            width: 35%;
-        }
-
-        .career-table {
-            border: 1px solid #a2a9b1;
-            font-size: 11px;
-            width: 100%;
-            margin-top: 0;
-            table-layout: auto;
-        }
-
-        .career-table th, .career-table td {
-            padding: 1px 4px;
-            text-align: center;
-            border-right: 1px solid #a2a9b1;
-            border-bottom: 1px solid #eaecf0;
-            font-size: 10px;
-            white-space: nowrap;
-        }
-
-        .career-section-header {
-            background: #ccccff;
-            padding: 4px 8px;
-            text-align: center;
-            font-weight: bold;
-            border-bottom: 1px solid #a2a9b1;
-            font-size: 11px;
-        }
-
-        .career-table th {
-            background: #eaecf0;
-            padding: 2px 4px;
-            text-align: center;
-            font-weight: bold;
-            border: 1px solid #a2a9b1;
-            font-size: 10px;
-        }
-
-        .career-table td {
-            padding: 1px 4px;
-            text-align: center;
-            border-right: 1px solid #a2a9b1;
-            border-bottom: 1px solid #eaecf0;
-            font-size: 10px;
-            white-space: nowrap;
-        }
-
-        .career-table .team-name {
-            text-align: left;
-            font-weight: normal;
-            padding-left: 6px;
-        }
-
-        .career-table .team-name a {
-            color: #0645ad;
-            text-decoration: none;
-        }
-
-        .career-table .team-name a:hover {
-            text-decoration: underline;
-        }
-
-        .career-total {
-            font-weight: bold;
-            background: #f8f9fa;
-        }
-
-        .career-footnote {
-            font-size: 9px;
-            padding: 4px 8px;
-            background: #f8f9fa;
-            border-top: 1px solid #a2a9b1;
-            text-align: center;
-        }
-
-        .height-input {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .height-input input {
-            flex: 1;
-        }
-
-        .photo-upload {
-            margin: 15px 0;
-        }
-
+        /* MODIFIED: CSS for #preview alignment */
         #preview {
             background: white;
             color: black;
@@ -363,36 +244,24 @@
             margin: 20px 0;
             border-radius: 10px;
             display: none;
+            text-align: left; /* Default alignment for desktop */
         }
 
-        .searchable-input {
-            position: relative;
+        @media (max-width: 768px) { /* Breakpoint for mobile */
+            #preview {
+                text-align: center; /* Center the inline-block .player-infobox on mobile */
+                padding: 10px; /* Optional: reduce padding on mobile for more space */
+            }
+            /* If the table itself is too wide, this won't prevent horizontal scroll,
+               but it will center the overflowing element. */
         }
+        /* END MODIFIED CSS for #preview alignment */
 
-        .suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ccc;
-            border-top: none;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
 
-        .suggestion-item {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            color: black;
-        }
-
-        .suggestion-item:hover {
-            background: #f0f0f0;
-        }
+        .searchable-input { position: relative; }
+        .suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; }
+        .suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; color: black; }
+        .suggestion-item:hover { background: #f0f0f0; }
     </style>
 </head>
 <body>
@@ -412,7 +281,6 @@
                         <input type="date" id="dateOfBirth" name="dateOfBirth" required autocomplete="bday">
                     </div>
                 </div>
-                
                 <div class="form-row">
                     <div class="form-group">
                         <label for="placeOfBirth">Place of Birth *</label>
@@ -435,7 +303,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Height *</label> 
@@ -451,7 +318,6 @@
                         <input type="number" id="careerLength" name="careerLength" min="1" max="40" required autocomplete="off">
                     </div>
                 </div>
-
                 <div class="photo-upload form-group">
                     <label for="playerPhoto">Player Photo (optional)</label>
                     <input type="file" id="playerPhoto" name="playerPhoto" accept="image/jpeg,image/png">
@@ -542,8 +408,9 @@
     </div>
 
     <script>
-        // Ensure this is the VERY FIRST SCRIPT element or one of the first, before any other functions are defined.
-        // Helper function to normalize club names for searching and comparison
+        // --- START OF COMPLETE SCRIPT ---
+        // (Ensure your full originalFootballClubsList and countries list are populated below)
+
         function normalizeClubName(name) {
             if (!name) return '';
             return name
@@ -559,11 +426,8 @@
                 .trim();
         }
 
-        // Global variable to store mapping of normalized names to display names
         const clubDisplayNames = {};
 
-        // !!! IMPORTANT: Replace the truncated list below with your FULL originalFootballClubsList !!!
-        // This list is CRUCIAL for the dynamic lower tier and club suggestions.
         const originalFootballClubsList = [
             'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion', 'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Liverpool', 'Luton Town', 'Manchester City', 'Manchester United', 'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers',
             'Birmingham City', 'Blackburn Rovers', 'Bristol City', 'Cardiff City', 'Coventry City', 'Huddersfield Town', 'Hull City', 'Ipswich Town', 'Leeds United', 'Leicester City', 'Middlesbrough', 'Millwall', 'Norwich City', 'Plymouth Argyle', 'Preston North End', 'Queens Park Rangers', 'Rotherham United', 'Sheffield Wednesday', 'Southampton', 'Stoke City', 'Sunderland', 'Swansea City', 'Watford', 'West Bromwich Albion',
@@ -603,23 +467,18 @@
             'Beijing Guoan', 'Changchun Yatai', 'Chengdu Rongcheng', 'Cangzhou Mighty Lions', 'Dalian Professional', 'Henan FC', 'Meizhou Hakka', 'Nantong Zhiyun', 'Qingdao Hainiu', 'Shandong Taishan', 'Shanghai Port', 'Shanghai Shenhua', 'Shenzhen FC', 'Tianjin Jinmen Tiger', 'Wuhan Three Towns', 'Zhejiang Professional'
         ];
 
-        // Process the original list to get unique normalized names and populate display names
         const footballClubs = [...new Set(originalFootballClubsList.map(name => {
             const normalized = normalizeClubName(name);
-            // Prefer longer or more "official" display names if multiple raw names normalize to the same thing
             if (!clubDisplayNames[normalized] || name.length > clubDisplayNames[normalized].length) { 
                  clubDisplayNames[normalized] = name; 
             }
             return normalized;
         }))].sort();
 
-        // !!! IMPORTANT: Replace the truncated list below with your FULL countries list !!!
         const countries = [ 
             'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Democratic Republic of the Congo', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'England', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Northern Ireland', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Scotland', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Wales', 'Yemen', 'Zambia', 'Zimbabwe'
-            // ... ensure your FULL list from the original file is here
         ];
 
-        // --- CLUB TIER DEFINITIONS START ---
         const _topTierClubNamesRaw = [ 
             'Arsenal', 'Aston Villa', 'Brighton & Hove Albion', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United', 'Nottingham Forest', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers',
             'Athletic Bilbao', 'Atlético Madrid', 'Barcelona', 'Real Betis', 'Celta Vigo', 'Getafe CF', 'Girona FC', 'UD Las Palmas', 'RCD Mallorca', 'CA Osasuna', 'Rayo Vallecano', 'Real Madrid', 'Real Sociedad', 'Sevilla FC', 'Valencia CF', 'Villarreal CF', 'UD Almería', 'Deportivo Alavés',
@@ -658,7 +517,6 @@
         const topTierClubs = [...new Set(topTierClubNamesNormalized)];
         const midTierClubs = [...new Set(midTierClubNamesNormalized.filter(name => !topTierClubs.includes(name)))];
         const lowerTierClubs = [...new Set(lowerTierClubNamesNormalized)];
-        // --- CLUB TIER DEFINITIONS END ---
 
         const eliteEuropeanTopTierClubNamesForWonderkid = [
             'Arsenal', 'Chelsea', 'Liverpool', 'Manchester City', 'Manchester United', 'Tottenham Hotspur',
@@ -671,7 +529,7 @@
 
         let clubCount = 1; 
         let playerPhotoUrl = null;
-
+        
         // --- ALL FUNCTIONS DEFINED BELOW ---
 
         function setupEventListeners() {
@@ -867,7 +725,7 @@
                         <label for="prolific_${newClubIndex}">
                             <input type="checkbox" class="prolific-checkbox" name="prolific_${newClubIndex}" id="prolific_${newClubIndex}"> Prolific
                         </label>
-                        <label for="loan_${newClubIndex}"> 
+                        <label for="loan_${newClubIndex}" class="loan-label-option">
                             <input type="checkbox" class="loan-checkbox" name="loan_${newClubIndex}" id="loan_${newClubIndex}"> Loan
                         </label>
                     </div>
@@ -997,9 +855,9 @@
             }
             
             const youthClubInput = document.getElementById('youthClub');
-            const normalizedYouthClub = normalizeClubName(youthClubInput.value); // Normalize for check
+            const normalizedYouthClub = normalizeClubName(youthClubInput.value);
             if (!normalizedYouthClub) errors.push('Youth club is required');
-            else youthClubInput.value = clubDisplayNames[normalizedYouthClub] || youthClubInput.value; // Set to display name if available
+            else youthClubInput.value = clubDisplayNames[normalizedYouthClub] || youthClubInput.value; 
 
             const heightCm = document.getElementById('heightCm').value;
             const heightFeet = document.getElementById('heightFeet').value;
@@ -1007,9 +865,9 @@
             
             const firstClubInputElement = document.querySelector('#seniorClubs .club-entry:first-child .club-input');
             if (firstClubInputElement) {
-                const normalizedFirstClub = normalizeClubName(firstClubInputElement.value); // Normalize for check
+                const normalizedFirstClub = normalizeClubName(firstClubInputElement.value);
                 if (!normalizedFirstClub) errors.push('First club name is required');
-                else firstClubInputElement.value = clubDisplayNames[normalizedFirstClub] || firstClubInputElement.value; // Set to display name
+                else firstClubInputElement.value = clubDisplayNames[normalizedFirstClub] || firstClubInputElement.value; 
             } else {
                  errors.push('First club entry is missing.');
             }
@@ -1032,7 +890,7 @@
                         const loanCheckbox = entry.querySelector('.loan-checkbox');
                         
                         if (clubInput && seasonsInput ) { 
-                            const clubNameForValidation = clubInput.value; // Use value as is (should be display name)
+                            const clubNameForValidation = clubInput.value; 
 
                             if (clubNameForValidation && seasonsInput.value) {
                                 const seasons = parseInt(seasonsInput.value);
@@ -1072,7 +930,6 @@
             return errors;
         }
         
-        // --- AUTO-GENERATE CAREER FUNCTIONS ---
         function createJourneyman() {
             const errorMessagesDiv = document.getElementById('autoGenErrorMessages'); 
             errorMessagesDiv.innerHTML = ''; 
@@ -1121,7 +978,7 @@
                 placeOfBirth: document.getElementById('placeOfBirth').value,
                 position: document.getElementById('position').value,
                 heightCm: document.getElementById('heightCm').value,
-                youthClub: document.getElementById('youthClub').value, // Use display name directly
+                youthClub: document.getElementById('youthClub').value, 
                 country: document.getElementById('country').value, 
                 caps: document.getElementById('caps').value
             };
@@ -1200,7 +1057,7 @@
                 seasonsRemaining -= currentStintSeasons;
                 
                 if (seasonsRemaining >= 1 && Math.random() < 0.3 && clubs.length > 0 && clubs.length < 19) { 
-                    const parentClubDataForLoan = clubs[clubs.length - 1]; // Last added club (parent)
+                    const parentClubDataForLoan = clubs[clubs.length - 1]; 
                     let loanableTierPool = []; 
                     if (currentClubTierArray === topTierClubs) {
                         if (Math.random() < 0.1 && topTierClubs.length > 0) loanableTierPool.push(...topTierClubs);
@@ -1253,7 +1110,7 @@
                             isLoan: true,
                             isBenchwarmer: false, 
                             isJanuaryTransfer: isJanuaryTransfer,
-                            parentClub: parentClubDataForLoan.name, // Use display name of parent
+                            parentClub: parentClubDataForLoan.name, 
                             isProlific: loanIsProlific 
                         });
                         
@@ -1326,7 +1183,7 @@
                 placeOfBirth: placeBirthInput.value,
                 position: positionInput.value,
                 heightCm: heightCmInput.value,
-                youthClub: document.getElementById('youthClub').value, // Use display name
+                youthClub: document.getElementById('youthClub').value, 
                 country: document.getElementById('country').value,
                 caps: document.getElementById('caps').value
             };
@@ -1490,7 +1347,7 @@
                 placeOfBirth: document.getElementById('placeOfBirth').value,
                 position: document.getElementById('position').value,
                 heightCm: document.getElementById('heightCm').value,
-                youthClub: document.getElementById('youthClub').value, // Use display name
+                youthClub: document.getElementById('youthClub').value, 
                 country: document.getElementById('country').value,
                 caps: document.getElementById('caps').value
             };
@@ -1680,7 +1537,7 @@
                 placeOfBirth: document.getElementById('placeOfBirth').value,
                 position: document.getElementById('position').value,
                 heightCm: document.getElementById('heightCm').value,
-                youthClub: document.getElementById('youthClub').value, // Should be display name from searchable input
+                youthClub: document.getElementById('youthClub').value, 
                 country: document.getElementById('country').value, 
                 caps: document.getElementById('caps').value
             };
@@ -1703,8 +1560,8 @@
                 const benchwarmerCheckbox = entry.querySelector('.benchwarmer-checkbox');
                 const prolificCheckbox = entry.querySelector('.prolific-checkbox'); 
                 
-                const clubDisplayNameFromInput = clubInput.value; // User types/selects display name
-                const normalizedClubNameForLogic = normalizeClubName(clubDisplayNameFromInput); // For internal logic if needed
+                const clubDisplayNameFromInput = clubInput.value;
+                const normalizedClubNameForLogic = normalizeClubName(clubDisplayNameFromInput);
 
                 if (clubDisplayNameFromInput && seasonsInput.value) {
                     const seasons = parseInt(seasonsInput.value);
@@ -1774,7 +1631,6 @@
                     initialInternationalStats.goals = 0;
                  }
             }
-            // Ensure formData.youthClub is the display name for createWikipediaTable
             formData.youthClub = clubDisplayNames[normalizeClubName(formData.youthClub)] || formData.youthClub;
             createWikipediaTable(formData, clubs, initialInternationalStats, youthStartYear, youthEndYear, seniorStartYear);
         }
@@ -2180,19 +2036,18 @@
             });
         }
 
-        // This ensures the DOM is fully loaded before event listeners are attached,
-        // and all functions are defined.
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             setupSearchableInputs(); 
 
-            // html2canvas library loading
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-            script.integrity = 'sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==';
-            script.crossOrigin = 'anonymous';
-            script.referrerPolicy = 'no-referrer';
-            document.head.appendChild(script);
+            if (!document.querySelector('script[src*="html2canvas"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                script.integrity = 'sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==';
+                script.crossOrigin = 'anonymous';
+                script.referrerPolicy = 'no-referrer';
+                document.head.appendChild(script);
+            }
         });
     </script>
 </body>
