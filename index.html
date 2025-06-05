@@ -236,7 +236,6 @@
         .height-input input { flex: 1; }
         .photo-upload { margin: 15px 0; }
 
-        /* MODIFIED: CSS for #preview alignment */
         #preview {
             background: white;
             color: black;
@@ -244,20 +243,16 @@
             margin: 20px 0;
             border-radius: 10px;
             display: none;
-            text-align: left; /* Default alignment for desktop */
+            text-align: left; 
         }
 
-        @media (max-width: 768px) { /* Breakpoint for mobile */
+        @media (max-width: 768px) { 
             #preview {
-                text-align: center; /* Center the inline-block .player-infobox on mobile */
-                padding: 10px; /* Optional: reduce padding on mobile for more space */
+                text-align: center; 
+                padding: 10px; 
             }
-            /* If the table itself is too wide, this won't prevent horizontal scroll,
-               but it will center the overflowing element. */
         }
-        /* END MODIFIED CSS for #preview alignment */
-
-
+        
         .searchable-input { position: relative; }
         .suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; }
         .suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; color: black; }
@@ -409,8 +404,8 @@
 
     <script>
         // --- START OF COMPLETE SCRIPT ---
-        // (Ensure your full originalFootballClubsList and countries list are populated below)
 
+        // Helper function to normalize club names
         function normalizeClubName(name) {
             if (!name) return '';
             return name
@@ -529,8 +524,32 @@
 
         let clubCount = 1; 
         let playerPhotoUrl = null;
-        
+
         // --- ALL FUNCTIONS DEFINED BELOW ---
+        // (The definitions for setupEventListeners, setupSearchableInputs, convertFromFeet, convertFromCm, removeClub, addClub,
+        // generateStats, validateForm, createJourneyman, generateJourneymanCareer, createWonderkidBurnout, generateWonderkidBurnoutCareer,
+        // createGetStuckIn, generateGetStuckInCareer, generateCareerTable, getRandomDateInPastWindow, createWikipediaTable, 
+        // formatDateWiki, downloadTable, and renderAndDownloadInfobox should follow here, in their complete and corrected form from our previous discussions)
+        // For brevity, I am not repeating all several hundred lines of these functions again, but they MUST be present here.
+        // The key functions that were previously missing (like getRandomDateInPastWindow) need to be included.
+        // I will provide the structure for downloadTable and renderAndDownloadInfobox again as they were complex.
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            setupSearchableInputs(); 
+
+            if (!document.querySelector('script[src*="html2canvas"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                script.integrity = 'sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==';
+                script.crossOrigin = 'anonymous';
+                script.referrerPolicy = 'no-referrer';
+                document.head.appendChild(script);
+            }
+        });
+
+        // --- Ensure ALL your functions are defined below, in the correct order ---
+        // (Example of where the missing/corrected functions should go)
 
         function setupEventListeners() {
             document.getElementById('heightFeet').addEventListener('input', convertFromFeet);
@@ -1995,20 +2014,36 @@
             return dateObj.getUTCDate() + ' ' + months[dateObj.getUTCMonth()] + ' ' + dateObj.getUTCFullYear();
         }
 
+        function renderAndDownloadInfobox(infoboxElement, photoElementToRestore, originalSrcToRestore) {
+            html2canvas(infoboxElement, {
+                backgroundColor: 'white', 
+                scale: 2.5, 
+                useCORS: true, 
+                width: infoboxElement.offsetWidth, 
+                height: infoboxElement.offsetHeight
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const playerName = document.getElementById('playerName').value || 'player';
+                link.download = playerName.replace(/\s+/g, '_') + '_career_table.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 0.95); 
+                link.click();
+
+                if (photoElementToRestore && originalSrcToRestore) {
+                    photoElementToRestore.src = originalSrcToRestore; 
+                }
+            }).catch(error => {
+                alert('Download functionality error. Please copy the table manually or use browser print functionality.');
+                console.error('Download error:', error);
+                if (photoElementToRestore && originalSrcToRestore) {
+                    photoElementToRestore.src = originalSrcToRestore; 
+                }
+            });
+        }
+
         function downloadTable() {
             const previewElement = document.getElementById('preview');
-            
             if (typeof html2canvas === 'undefined') {
                 alert('Download functionality is loading. Please try again in a moment or use browser print functionality.');
-                if (!document.querySelector('script[src*="html2canvas"]')) {
-                    const script = document.createElement('script');
-                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                    script.integrity = 'sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==';
-                    script.crossOrigin = 'anonymous';
-                    script.referrerPolicy = 'no-referrer';
-                    document.head.appendChild(script);
-                    alert('html2canvas library was missing and is now being loaded. Please try downloading again in a few seconds.');
-                }
                 return;
             }
             
@@ -2018,22 +2053,41 @@
                 return;
             }
             
-            html2canvas(infobox, {
-                backgroundColor: 'white', 
-                scale: 2, 
-                useCORS: true, 
-                width: infobox.offsetWidth, 
-                height: infobox.offsetHeight 
-            }).then(canvas => {
-                const link = document.createElement('a');
-                const playerName = document.getElementById('playerName').value || 'player';
-                link.download = playerName.replace(/\s+/g, '_') + '_career_table.jpg';
-                link.href = canvas.toDataURL('image/jpeg', 0.9); 
-                link.click();
-            }).catch(error => {
-                alert('Download functionality error. Please copy the table manually or use browser print functionality.');
-                console.error('Download error:', error);
-            });
+            const playerPhotoElement = infobox.querySelector('.player-photo img');
+            let originalPhotoSrc = null;
+            
+            if (playerPhotoElement && playerPhotoElement.src && playerPhotoElement.classList.contains('img-bw-filter')) {
+                originalPhotoSrc = playerPhotoElement.src;
+                
+                const tempImg = new Image();
+                tempImg.crossOrigin = "Anonymous"; 
+                
+                tempImg.onload = function() {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = tempImg.naturalWidth;
+                    tempCanvas.height = tempImg.naturalHeight;
+                    const ctx = tempCanvas.getContext('2d');
+                    
+                    ctx.filter = 'grayscale(100%)';
+                    ctx.drawImage(tempImg, 0, 0, tempCanvas.width, tempCanvas.height);
+                    ctx.filter = 'none'; // Reset filter for other canvas uses if any
+                    
+                    playerPhotoElement.src = tempCanvas.toDataURL(); 
+                    
+                    setTimeout(() => {
+                        renderAndDownloadInfobox(infobox, playerPhotoElement, originalPhotoSrc);
+                    }, 50); 
+                };
+                
+                tempImg.onerror = function() {
+                    console.error("Temporary image for grayscaling failed to load. Downloading with potentially color image.");
+                    renderAndDownloadInfobox(infobox, null, null); 
+                }
+                tempImg.src = originalPhotoSrc; 
+
+            } else {
+                renderAndDownloadInfobox(infobox, null, null);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -2049,6 +2103,7 @@
                 document.head.appendChild(script);
             }
         });
+        // --- END OF COMPLETE SCRIPT ---
     </script>
 </body>
 </html>
