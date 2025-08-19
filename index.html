@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KMRFTJJ43T"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KMRFTJJ43T"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -10,10 +11,10 @@
 
   gtag('config', 'G-KMRFTJJ43T');
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footballer Career Table Generator</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Footballer Career Table Generator</title>
+<style>
         body {
             font-family: 'Courier New', monospace;
             background: linear-gradient(135deg, #2d5a27, #4a7c59);
@@ -266,152 +267,258 @@
         .suggestions { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; }
         .suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; color: black; }
         .suggestion-item:hover { background: #f0f0f0; }
-    </style>
+    
+        .site-footer {
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            letter-spacing: 0.3px;
+        }
+    
+    
+
+/* === Football Manager inspired shell (scoped to .fm-*) === */
+:root{
+  --fm-bg:#0f0a16;
+  --fm-panel:#1a1027;
+  --fm-panel-2:#221433;
+  --fm-primary:#7b1fa2;   /* purple */
+  --fm-accent:#ff2e88;    /* magenta */
+  --fm-text:#f2eaff;
+  --fm-muted:#bca7d8;
+  --fm-line: rgba(255,255,255,.08);
+  --radius:12px;
+}
+
+/* Layout shell */
+.fm-shell{
+  display:grid; grid-template-columns:64px 1fr; grid-template-rows:56px 1fr;
+  gap:16px; padding:16px; min-height:100dvh; background:var(--fm-bg);
+}
+.fm-rail{
+  grid-row:1/-1; background:linear-gradient(180deg,var(--fm-panel),var(--fm-panel-2));
+  border-radius:var(--radius); display:flex; flex-direction:column; align-items:center;
+  padding:10px 0; gap:8px; color:var(--fm-text);
+}
+.fm-icon{ width:44px; height:44px; display:grid; place-items:center; border-radius:12px; opacity:.9; border:none; background:transparent; cursor:pointer }
+.fm-icon:hover{ background:rgba(255,255,255,.06) }
+
+.fm-topbar{
+  grid-column:2; display:flex; align-items:center; gap:12px; padding:0 14px;
+  background:linear-gradient(180deg,var(--fm-panel),var(--fm-panel-2)); border-radius:var(--radius);
+  color:var(--fm-text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.fm-topbar .brand{ font-weight:700; letter-spacing:.2px }
+.fm-search{
+  flex:1; background:rgba(255,255,255,.06); border:1px solid var(--fm-line);
+  border-radius:8px; padding:10px 12px; color:var(--fm-text)
+}
+.fm-user{ width:32px; height:32px; display:grid; place-items:center; border-radius:999px; background:rgba(255,255,255,.08) }
+
+.fm-main{ grid-column:2; display:grid; gap:16px; align-content:start }
+
+/* Panels */
+.fm-panel{
+  background:linear-gradient(180deg,var(--fm-panel),var(--fm-panel-2));
+  border-radius:var(--radius); box-shadow:0 6px 20px rgba(0,0,0,.35); padding:16px 18px;
+  color:var(--fm-text);
+}
+
+/* Form (scoped typography & controls) */
+.fm-form, .fm-rail, .fm-topbar{
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.fm-form h3, .fm-form h4, .fm-form h5{ color:var(--fm-text); margin:6px 0 8px }
+.fm-form label{ display:block; font-size:11px; letter-spacing:.8px; text-transform:uppercase; color:var(--fm-muted); margin-bottom:6px }
+
+/* Inputs inside the form are styled without touching your output table */
+.fm-form input[type="text"], .fm-form input[type="number"], .fm-form input[type="date"],
+.fm-form input[type="file"], .fm-form select, .fm-form textarea {
+  width:100%; background:rgba(255,255,255,.06); border:1px solid var(--fm-line);
+  border-radius:10px; padding:10px 12px; color:var(--fm-text);
+}
+.fm-form input::placeholder, .fm-form textarea::placeholder{ color:rgba(255,255,255,.45) }
+.fm-form input:focus, .fm-form select:focus, .fm-form textarea:focus{ outline:2px solid color-mix(in oklab, var(--fm-primary) 60%, white); outline-offset:2px }
+
+/* Buttons */
+.fm-form .btn, .fm-form button[type="submit"], .fm-form button[type="button"]{
+  border:1px solid var(--fm-line); background:rgba(255,255,255,.04);
+  padding:10px 14px; border-radius:10px; color:var(--fm-text); cursor:pointer; transition:filter .12s;
+}
+.fm-form .btn:hover, .fm-form button:hover{ filter:brightness(1.05) }
+.fm-form .btn.btn-retro-orange, .fm-form .primary, .fm-form button[type="submit"]{
+  border-color:transparent; background:linear-gradient(90deg,var(--fm-primary),var(--fm-accent)); font-weight:700
+}
+
+/* Output container – neutral so your table styling remains unchanged */
+.fm-output{ padding-bottom:24px }
+
+
+.site-footer {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+
+/* Force black page background to remove stray green gradients */
+body { background: #000 !important; }
+
+/* Dark, readable dropdowns in the form */
+.fm-form select {
+  background-color: rgba(255,255,255,.06);
+  color: var(--fm-text);
+}
+
+/* Most browsers honor option styling for the opened list */
+.fm-form select option {
+  background-color: #1a1027;
+  color: var(--fm-text);
+}
+.fm-form select option:checked,
+.fm-form select option:hover {
+  background-color: #2b1b3f;
+  color: var(--fm-text);
+}
+
+</style>
 </head>
-<body>
-    <div class="container">
-        <h1>⚽ Footballer Career Table Generator ⚽</h1>
-        
-        <form id="playerForm">
-            <div class="form-section">
-                <h3>Personal Information</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="playerName">Player Name *</label>
-                        <input type="text" id="playerName" name="playerName" required autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="dateOfBirth">Date of Birth *</label>
-                        <input type="date" id="dateOfBirth" name="dateOfBirth" required autocomplete="bday">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="placeOfBirth">Place of Birth *</label>
-                        <input type="text" id="placeOfBirth" name="placeOfBirth" required autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="position">Position *</label>
-                        <select id="position" name="position" required>
-                            <option value="">Select Position</option>
-                            <option value="Goalkeeper">Goalkeeper</option>
-                            <option value="Left-Back">Left-Back</option>
-                            <option value="Centre-Back">Centre-Back</option>
-                            <option value="Right-Back">Right-Back</option>
-                            <option value="Midfielder">Midfielder</option>
-                            <option value="Attacking Midfielder">Attacking Midfielder</option>
-                            <option value="Defensive Midfielder">Defensive Midfielder</option>
-                            <option value="Right Winger">Right Winger</option>
-                            <option value="Left Winger">Left Winger</option>
-                            <option value="Striker">Striker</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Height *</label> 
-                        <div class="height-input">
-                            <input type="number" id="heightFeet" name="heightFeet" placeholder="Feet" min="3" max="8" autocomplete="off" aria-label="Height in feet">
-                            <input type="number" id="heightInches" name="heightInches" placeholder="Inches" min="0" max="11" autocomplete="off" aria-label="Height in inches">
-                            <span>OR</span>
-                            <input type="number" id="heightCm" name="heightCm" placeholder="Centimeters" min="100" max="250" autocomplete="off" aria-label="Height in centimeters">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="careerLength">Career Length (seasons) *</label>
-                        <input type="number" id="careerLength" name="careerLength" min="1" max="40" required autocomplete="off">
-                    </div>
-                </div>
-                <div class="photo-upload form-group">
-                    <label for="playerPhoto">Player Photo (optional)</label>
-                    <input type="file" id="playerPhoto" name="playerPhoto" accept="image/jpeg,image/png">
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3>Youth Career</h3>
-                <div class="form-group">
-                    <label for="youthClub">Youth Club *</label>
-                    <div class="searchable-input">
-                        <input type="text" id="youthClub" name="youthClub" placeholder="Search for club..." required autocomplete="off">
-                        <div class="suggestions" id="youthClubSuggestions"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3>International Career (optional)</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <div class="searchable-input">
-                            <input type="text" id="country" name="country" placeholder="Search for country..." autocomplete="off">
-                            <div class="suggestions" id="countrySuggestions"></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="caps">International Caps</label>
-                        <input type="number" id="caps" name="caps" min="0" max="250" autocomplete="off">
-                    </div>
-                </div>
-            </div>
-            
-            <div id="errorMessages"></div> 
-
-            <div class="form-section">
-                <h3>Auto-generate Senior Career</h3>
-                <div style="text-align: center; margin: 10px 0;"> 
-                    <button type="button" class="btn btn-retro-orange" onclick="createGetStuckIn()" id="getStuckInBtn">Get Stuck In</button> 
-                    <button type="button" class="btn btn-retro-orange" onclick="createJourneyman()" id="journeymanBtn">Create Journeyman</button>
-                    <button type="button" class="btn btn-retro-orange" onclick="createWonderkidBurnout()" id="wonderkidBtn">Create Wonderkid Burnout</button>
-                </div>
-                <div id="autoGenErrorMessages"></div> 
-            </div>
-
-            <div class="form-section">
-                <h3>Create your own Senior Career</h3>
-                <div id="seniorClubs">
-                    <div class="club-entry">
-                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;" class="checkbox-group">
-                            <h4 style="margin: 0; color: #ffd700;">First Club *</h4>
-                            <label for="benchwarmer_0">
-                                <input type="checkbox" class="benchwarmer-checkbox" name="benchwarmer_0" id="benchwarmer_0"> Benchwarmer
+<body><div class="fm-shell"><aside class="fm-rail"><button class="fm-icon" title="Home">🏠</button><button class="fm-icon" title="Players">👤</button><button class="fm-icon" title="Clubs">🏟️</button><button class="fm-icon" title="Data">📊</button></aside><header class="fm-topbar"><div class="brand">Footballer Career Table Generator</div><input class="fm-search" placeholder="Search players, clubs, competitions…" type="search"/><div class="fm-user">FC</div></header><main class="fm-main"><section class="fm-panel"><form class="fm-form" id="playerForm">
+<div class="form-section">
+<h3>Personal Information</h3>
+<div class="form-row">
+<div class="form-group">
+<label for="playerName">Player Name *</label>
+<input autocomplete="off" id="playerName" name="playerName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="dateOfBirth">Date of Birth *</label>
+<input autocomplete="bday" id="dateOfBirth" min="1900-01-01" name="dateOfBirth" required="" type="date"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="placeOfBirth">Place of Birth *</label>
+<input autocomplete="off" id="placeOfBirth" name="placeOfBirth" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="position">Position *</label>
+<select id="position" name="position" required="">
+<option value="">Select Position</option>
+<option value="Goalkeeper">Goalkeeper</option>
+<option value="Left-Back">Left-Back</option>
+<option value="Centre-Back">Centre-Back</option>
+<option value="Right-Back">Right-Back</option>
+<option value="Midfielder">Midfielder</option>
+<option value="Attacking Midfielder">Attacking Midfielder</option>
+<option value="Defensive Midfielder">Defensive Midfielder</option>
+<option value="Right Winger">Right Winger</option>
+<option value="Left Winger">Left Winger</option>
+<option value="Striker">Striker</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Height *</label>
+<div class="height-input">
+<input aria-label="Height in feet" autocomplete="off" id="heightFeet" max="8" min="3" name="heightFeet" placeholder="Feet" type="number"/>
+<input aria-label="Height in inches" autocomplete="off" id="heightInches" max="11" min="0" name="heightInches" placeholder="Inches" type="number"/>
+<span>OR</span>
+<input aria-label="Height in centimeters" autocomplete="off" id="heightCm" max="250" min="100" name="heightCm" placeholder="Centimeters" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label for="careerLength">Career Length (seasons) *</label>
+<input autocomplete="off" id="careerLength" max="40" min="1" name="careerLength" required="" type="number"/>
+</div>
+</div>
+<div class="photo-upload form-group">
+<label for="playerPhoto">Player Photo (optional)</label>
+<input accept="image/jpeg,image/png" id="playerPhoto" name="playerPhoto" type="file"/>
+</div>
+</div>
+<div class="form-section">
+<h3>Youth Career</h3>
+<div class="form-group">
+<label for="youthClub">Youth Club *</label>
+<div class="searchable-input">
+<input autocomplete="off" id="youthClub" name="youthClub" placeholder="Search for club..." required="" type="text"/>
+<div class="suggestions" id="youthClubSuggestions"></div>
+</div>
+</div>
+</div>
+<div class="form-section">
+<h3>International Career (optional)</h3>
+<div class="form-row">
+<div class="form-group">
+<label for="country">Country</label>
+<div class="searchable-input">
+<input autocomplete="off" id="country" name="country" placeholder="Search for country..." type="text"/>
+<div class="suggestions" id="countrySuggestions"></div>
+</div>
+</div>
+<div class="form-group">
+<label for="caps">International Caps</label>
+<input autocomplete="off" id="caps" max="250" min="0" name="caps" type="number"/>
+</div>
+</div>
+</div>
+<div id="errorMessages"></div>
+<div class="form-section">
+<h3>Auto-generate Senior Career</h3>
+<div style="text-align: center; margin: 10px 0;">
+<button class="btn btn-retro-orange" id="getStuckInBtn" onclick="createGetStuckIn()" type="button">Get Stuck In</button>
+<button class="btn btn-retro-orange" id="journeymanBtn" onclick="createJourneyman()" type="button">Create Journeyman</button>
+<button class="btn btn-retro-orange" id="wonderkidBtn" onclick="createWonderkidBurnout()" type="button">Create Wonderkid Burnout</button>
+</div>
+<div id="autoGenErrorMessages"></div>
+</div>
+<div class="form-section">
+<h3>Create your own Senior Career</h3>
+<div id="seniorClubs">
+<div class="club-entry">
+<div class="checkbox-group" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+<h4 style="margin: 0; color: #ffd700;">First Club *</h4>
+<label for="benchwarmer_0">
+<input class="benchwarmer-checkbox" id="benchwarmer_0" name="benchwarmer_0" type="checkbox"/> Benchwarmer
                             </label>
-                            <label for="prolific_0">
-                                <input type="checkbox" class="prolific-checkbox" name="prolific_0" id="prolific_0"> Prolific
+<label for="prolific_0">
+<input class="prolific-checkbox" id="prolific_0" name="prolific_0" type="checkbox"/> Prolific
                             </label>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="clubName_0">Club Name</label>
-                                <div class="searchable-input">
-                                    <input type="text" id="clubName_0" name="clubName_0" class="club-input" placeholder="Search for club..." required autocomplete="off">
-                                    <div class="suggestions"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="clubSeasons_0">Seasons</label>
-                                <input type="number" id="clubSeasons_0" name="clubSeasons_0" class="seasons-input" min="1" max="40" required autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn" onclick="addClub()">Add Another Club</button>
-                <div style="text-align: center; margin: 20px 0 0 0;">
-                     <button type="submit" class="btn btn-primary">Generate Career Table</button> 
-                </div>
-                <div id="manualCareerErrorMessages"></div> 
-            </div>
-
-            <div style="text-align: center; margin: 10px 0 30px 0;">
-                <button type="button" class="btn" onclick="downloadTable()" id="downloadBtn" style="display: none;">Download as JPG</button>
-            </div>
-        </form>
-
-        <div id="preview"></div>
-    </div>
-
-    <script>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="clubName_0">Club Name</label>
+<div class="searchable-input">
+<input autocomplete="off" class="club-input" id="clubName_0" name="clubName_0" placeholder="Search for club..." required="" type="text"/>
+<div class="suggestions"></div>
+</div>
+</div>
+<div class="form-group">
+<label for="clubSeasons_0">Seasons</label>
+<input autocomplete="off" class="seasons-input" id="clubSeasons_0" max="40" min="1" name="clubSeasons_0" required="" type="number"/>
+</div>
+</div>
+</div>
+</div>
+<button class="btn" onclick="addClub()" type="button">Add Another Club</button>
+<div style="text-align: center; margin: 20px 0 0 0;">
+<button class="btn btn-primary" type="submit">Generate Career Table</button>
+</div>
+<div id="manualCareerErrorMessages"></div>
+</div>
+<div style="text-align: center; margin: 10px 0 30px 0;">
+<button class="btn" id="downloadBtn" onclick="downloadTable()" style="display: none;" type="button">Download as JPG</button>
+</div>
+</form></section><section class="fm-output"><div id="preview"></div><footer class="site-footer"><small>© 2025 Theo Bird — Code &amp; design by Theo Bird</small></footer></section></main></div><script>
         // --- START OF COMPLETE SCRIPT ---
 
         function normalizeClubName(name) {
@@ -2095,6 +2202,36 @@
             }
         });
         // --- END OF COMPLETE SCRIPT ---
-    </script>
-</body>
+    </script><script>
+document.addEventListener('DOMContentLoaded', function(){
+  var dob = document.getElementById('dateOfBirth');
+  if(!dob) return;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var max = today.toISOString().split('T')[0];
+  dob.setAttribute('max', max);
+  // Validate input (prevents submission if invalid)
+  function validateDOB(){
+    var v = dob.value;
+    if(!v){ dob.setCustomValidity(''); return; }
+    // Normalize; invalid dates will yield NaN
+    var d = new Date(v + 'T00:00:00');
+    if(isNaN(d.getTime())){
+      dob.setCustomValidity('Enter a valid date.');
+      return;
+    }
+    if(v > max){
+      dob.setCustomValidity('Date of birth cannot be in the future.');
+      return;
+    }
+    if(v < '1900-01-01'){
+      dob.setCustomValidity('Please enter a realistic date (1900 or later).');
+      return;
+    }
+    dob.setCustomValidity('');
+  }
+  dob.addEventListener('input', validateDOB);
+  dob.addEventListener('change', validateDOB);
+  validateDOB();
+});
+</script></body>
 </html>
