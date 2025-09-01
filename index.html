@@ -295,19 +295,12 @@
 
 /* Layout shell */
 .fm-shell{
-  display:grid; grid-template-columns:64px 1fr; grid-template-rows:56px 1fr;
+  display:grid; grid-template-columns:1fr; grid-template-rows:56px 1fr;
   gap:16px; padding:16px; min-height:100dvh; background:var(--fm-bg);
 }
-.fm-rail{
-  grid-row:1/-1; background:linear-gradient(180deg,var(--fm-panel),var(--fm-panel-2));
-  border-radius:var(--radius); display:flex; flex-direction:column; align-items:center;
-  padding:10px 0; gap:8px; color:var(--fm-text);
-}
-.fm-icon{ width:44px; height:44px; display:grid; place-items:center; border-radius:12px; opacity:.9; border:none; background:transparent; cursor:pointer }
-.fm-icon:hover{ background:rgba(255,255,255,.06) }
 
 .fm-topbar{
-  grid-column:2; display:flex; align-items:center; gap:12px; padding:0 14px;
+  display:flex; align-items:center; gap:12px; padding:0 14px;
   background:linear-gradient(180deg,var(--fm-panel),var(--fm-panel-2)); border-radius:var(--radius);
   color:var(--fm-text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
@@ -318,7 +311,7 @@
 }
 .fm-user{ width:32px; height:32px; display:grid; place-items:center; border-radius:999px; background:rgba(255,255,255,.08) }
 
-.fm-main{ grid-column:2; display:grid; gap:16px; align-content:start }
+.fm-main{ display:grid; gap:16px; align-content:start }
 
 /* Panels */
 .fm-panel{
@@ -328,7 +321,7 @@
 }
 
 /* Form (scoped typography & controls) */
-.fm-form, .fm-rail, .fm-topbar{
+.fm-form, .fm-topbar{
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 .fm-form h3, .fm-form h4, .fm-form h5{ color:var(--fm-text); margin:6px 0 8px }
@@ -390,7 +383,7 @@ body { background: #000 !important; }
 
 </style>
 </head>
-<body><div class="fm-shell"><aside class="fm-rail"><button class="fm-icon" title="Home">🏠</button><button class="fm-icon" title="Players">👤</button><button class="fm-icon" title="Clubs">🏟️</button><button class="fm-icon" title="Data">📊</button></aside><header class="fm-topbar"><div class="brand">Footballer Career Table Generator</div><input class="fm-search" placeholder="Search players, clubs, competitions…" type="search"/><div class="fm-user">FC</div></header><main class="fm-main"><section class="fm-panel"><form class="fm-form" id="playerForm">
+<body><div class="fm-shell"><header class="fm-topbar"><div class="brand">Footballer Career Table Generator</div><input class="fm-search" placeholder="Search players, clubs, competitions…" type="search"/><div class="fm-user">FC</div></header><main class="fm-main"><section class="fm-panel"><form class="fm-form" id="playerForm">
 <div class="form-section">
 <h3>Personal Information</h3>
 <div class="form-row">
@@ -648,9 +641,9 @@ body { background: #000 !important; }
             document.getElementById('playerPhoto').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
-                    const maxSize = 3 * 1024 * 1024; 
+                    const maxSize = 10 * 1024 * 1024;
                     if (file.size > maxSize) {
-                        alert('Photo file size is too large. Please choose an image smaller than 3MB. Current file size: ' + (file.size / (1024 * 1024)).toFixed(1) + 'MB');
+                        alert('Photo file size is too large. Please choose an image smaller than 10MB. Current file size: ' + (file.size / (1024 * 1024)).toFixed(1) + 'MB');
                         e.target.value = ''; 
                         playerPhotoUrl = null;
                         return;
